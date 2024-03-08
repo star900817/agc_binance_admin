@@ -272,7 +272,7 @@ const Binance = () => {
               {cards.map((card) => (
                 <li key={card.code}>
                   {record.minQty == 0
-                    ? card.referenceNo
+                    ? ''
                     : `${card.referenceNo} / ${card.code}`}
                 </li>
               ))}
