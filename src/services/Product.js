@@ -117,7 +117,6 @@ export const updateBinance = async (data) => {
   try {
     const updateProductFormData = new FormData();
     updateProductFormData.append('title', data?.title);
-    updateProductFormData.append('currency', data?.currency);
     updateProductFormData.append('price', data?.price);
     updateProductFormData.append('priceInSAR', data?.priceInSAR);
     updateProductFormData.append('image', data?.image);
@@ -186,7 +185,6 @@ export const addBinance = async (data) => {
   try {
     const addProductFormData = new FormData();
     addProductFormData.append('title', data.title);
-    addProductFormData.append('currency', data.currency);
     addProductFormData.append('price', data.price);
     addProductFormData.append('priceInSAR', data.priceInSAR);
     addProductFormData.append('image', data.image);
@@ -211,9 +209,7 @@ export const addBinance = async (data) => {
         },
       }
     );
-    console.log(result);
-
-    return { success: result.success, message: result.message };
+    return { success: result.data.success, message: result.data.message };
   } catch (error) {
     return { success: false, message: error.response.data.message };
   }
