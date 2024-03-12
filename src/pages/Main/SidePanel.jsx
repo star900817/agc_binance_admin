@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -9,14 +9,14 @@ import {
   CreditCardOutlined,
   PicRightOutlined,
   ProfileOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, theme, Avatar, Dropdown, Space } from "antd";
-import { Outlet, useNavigate } from "react-router-dom";
+} from '@ant-design/icons';
+import { Layout, Menu, Button, theme, Avatar, Dropdown, Space } from 'antd';
+import { Outlet, useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 
 export const SidePanel = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [key, setkey] = useState("1");
+  const [key, setkey] = useState('1');
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -29,22 +29,22 @@ export const SidePanel = () => {
   }
 
   const logOut = () => {
-    localStorage.removeItem("admin_token");
-    navigate("/");
+    localStorage.removeItem('admin_token');
+    navigate('/');
   };
 
   const manageProtectionOnRouting = (pageName) => {
-    let userGrantedAccessList = JSON.parse(localStorage.getItem("accessList"));
+    let userGrantedAccessList = JSON.parse(localStorage.getItem('accessList'));
     if (userGrantedAccessList?.includes(pageName)) return true;
     else false;
   };
 
   const items = [
     {
-      key: "1",
+      key: '1',
       label: (
         <>
-          <Space size={"middle"} onClick={() => logOut()}>
+          <Space size={'middle'} onClick={() => logOut()}>
             <Button size="small" icon={<LogoutOutlined />} />
             Logout
           </Space>
@@ -63,106 +63,106 @@ export const SidePanel = () => {
           defaultSelectedKeys={[key]}
           items={[
             {
-              key: "1",
+              key: '1',
               icon: <DashboardOutlined />,
-              label: "Dashboard",
+              label: 'Dashboard',
               onClick: () => {
-                manageProtectionOnRouting("dashboard")
-                  ? navigateTo("/main/dashboard", "1")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('dashboard')
+                  ? navigateTo('/main/dashboard', '1')
+                  : navigateTo('/main/unauthorized');
               },
-            },            
+            },
             {
-              key: "2",
+              key: '2',
               icon: <UserOutlined />,
-              label: "Users",
+              label: 'Users',
               onClick: () => {
-                manageProtectionOnRouting("users")
-                  ? navigateTo("/main/users", "2")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('users')
+                  ? navigateTo('/main/users', '2')
+                  : navigateTo('/main/unauthorized');
               },
             },
             {
-              key: "11",
+              key: '11',
               icon: <AppstoreAddOutlined />,
-              label: "Collections",
+              label: 'Collections',
               onClick: () => {
-                manageProtectionOnRouting("collections")
-                  ? navigateTo("/main/collections")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('collections')
+                  ? navigateTo('/main/collections')
+                  : navigateTo('/main/unauthorized');
               },
             },
             {
-              key: "3",
+              key: '3',
               icon: <AppstoreAddOutlined />,
-              label: "Categories",
+              label: 'Categories',
               onClick: () => {
-                manageProtectionOnRouting("categories")
-                  ? navigateTo("/main/categories", "3")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('categories')
+                  ? navigateTo('/main/categories', '3')
+                  : navigateTo('/main/unauthorized');
               },
             },
             {
               icon: <CreditCardOutlined />,
-              label: "GiftCard",
+              label: 'GiftCard',
               children: [
+                // {
+                //   key: '4',
+                //   label: 'Bitaqaty GiftCard',
+                //   onClick: () => {
+                //     manageProtectionOnRouting('giftCards')
+                //       ? navigateTo('/main/bitaqatygiftcard')
+                //       : navigateTo('/main/unauthorized');
+                //   },
+                // },
                 {
-                  key: "4",
-                  label: "Bitaqaty GiftCard",
+                  key: '5',
+                  label: 'Our Giftcards',
                   onClick: () => {
-                    manageProtectionOnRouting("giftCards")
-                      ? navigateTo("/main/bitaqatygiftcard")
-                      : navigateTo("/main/unauthorized");
-                  },
-                },
-                {
-                  key: "5",
-                  label: "Our Giftcards",
-                  onClick: () => {
-                    manageProtectionOnRouting("giftCards")
-                      ? navigateTo("/main/selectedgiftcards")
-                      : navigateTo("/main/unauthorized");
+                    manageProtectionOnRouting('giftCards')
+                      ? navigateTo('/main/selectedgiftcards')
+                      : navigateTo('/main/unauthorized');
                   },
                 },
               ],
             },
+            // {
+            //   icon: <PicRightOutlined />,
+            //   label: "Binance",
+            //   onClick: () => {
+            //     manageProtectionOnRouting("binance")
+            //       ? navigateTo("/main/binance")
+            //       : navigateTo("/main/unauthorized");
+            //   },
+            // },
             {
+              key: '8',
               icon: <PicRightOutlined />,
-              label: "Binance",
+              label: 'CMS',
               onClick: () => {
-                manageProtectionOnRouting("binance")
-                  ? navigateTo("/main/binance")
-                  : navigateTo("/main/unauthorized");
-              },
-            },            
-            {
-              key: "8",
-              icon: <PicRightOutlined />,
-              label: "CMS",
-              onClick: () => {
-                manageProtectionOnRouting("cms")
-                  ? navigateTo("/main/cmsManagement")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('cms')
+                  ? navigateTo('/main/cmsManagement')
+                  : navigateTo('/main/unauthorized');
               },
             },
             {
-              key: "9",
+              key: '9',
               icon: <ProfileOutlined />,
-              label: "Orders",
+              label: 'Orders',
               onClick: () => {
-                manageProtectionOnRouting("order")
-                  ? navigateTo("/main/orders")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('order')
+                  ? navigateTo('/main/orders')
+                  : navigateTo('/main/unauthorized');
               },
             },
             {
-              key: "10",
+              key: '10',
               icon: <ProfileOutlined />,
-              label: "Customers",
+              label: 'Customers',
               onClick: () => {
-                manageProtectionOnRouting("customer")
-                  ? navigateTo("/main/customers")
-                  : navigateTo("/main/unauthorized");
+                manageProtectionOnRouting('customer')
+                  ? navigateTo('/main/customers')
+                  : navigateTo('/main/unauthorized');
               },
             },
             // {
@@ -181,7 +181,7 @@ export const SidePanel = () => {
       <Layout>
         <Header
           style={{
-            padding: "0 10px",
+            padding: '0 10px',
             background: colorBgContainer,
           }}
         >
@@ -190,7 +190,7 @@ export const SidePanel = () => {
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
-              fontSize: "16px",
+              fontSize: '16px',
               width: 64,
               height: 64,
             }}
@@ -207,7 +207,7 @@ export const SidePanel = () => {
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
+            margin: '24px 16px',
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,

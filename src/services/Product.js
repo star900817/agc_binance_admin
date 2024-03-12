@@ -75,9 +75,8 @@ export const deleteBinance = async (id) => {
       })
     ).data;
 
-    return { success: result.success, message: result.message };
+    return { success: true, message: result.message };
   } catch (error) {
-    console.log('error', error);
     return { success: false, message: error.response.data.message };
   }
 };

@@ -1,101 +1,101 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./App.css";
-import { Login } from "./pages/Auth/Login";
-import { ErrorPage } from "./pages/Main/Error-Page";
-import { ForgetPassword } from "./pages/Auth/ForgetPassword";
-import { ResetPassword } from "./pages/Auth/ResetPassword";
-import { SidePanel } from "./pages/Main/SidePanel";
-import { Dashboard } from "./pages/Main/Dashboard";
-import { Users } from "./pages/Main/Users";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ProtectedRoute from "./components/ProjectedRoutes";
-import Categories from "./pages/Main/Categories";
-import Collections from "./pages/Main/Collections";
-import CombinedGiftList from "./pages/Main/CombinedGiftList/CombinedGiftList";
-import SelectedGiftCards from "./pages/Main/SelectedGiftCards";
-import BitaqatyGiftCards from "./pages/Main/BitaqatyGiftCards";
-import Binance from "./pages/Main/Binance/Binance";
-import Cms from "./pages/Main/CMS/Cms";
-import Unauthorized from "./pages/Main/Unauthorized";
-import Order from "./pages/Main/Order/Order";
-import Customer from "./pages/Main/Customer/Customer";
-import BinanceOrders from "./pages/Main/BinanceOrders/BinanceOrders";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import './App.css';
+import { Login } from './pages/Auth/Login';
+import { ErrorPage } from './pages/Main/Error-Page';
+import { ForgetPassword } from './pages/Auth/ForgetPassword';
+import { ResetPassword } from './pages/Auth/ResetPassword';
+import { SidePanel } from './pages/Main/SidePanel';
+import { Dashboard } from './pages/Main/Dashboard';
+import { Users } from './pages/Main/Users';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoute from './components/ProjectedRoutes';
+import Categories from './pages/Main/Categories';
+import Collections from './pages/Main/Collections';
+import CombinedGiftList from './pages/Main/CombinedGiftList/CombinedGiftList';
+import SelectedGiftCards from './pages/Main/SelectedGiftCards';
+import BitaqatyGiftCards from './pages/Main/BitaqatyGiftCards';
+import Binance from './pages/Main/Binance/Binance';
+import Cms from './pages/Main/CMS/Cms';
+import Unauthorized from './pages/Main/Unauthorized';
+import Order from './pages/Main/Order/Order';
+import Customer from './pages/Main/Customer/Customer';
+import BinanceOrders from './pages/Main/BinanceOrders/BinanceOrders';
 
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <Login />,
       errorElement: <ErrorPage />,
     },
     {
-      path: "/forgetPassword",
+      path: '/forgetPassword',
       element: <ForgetPassword />,
     },
     {
-      path: "/resetPassword",
+      path: '/resetPassword',
       element: <ResetPassword />,
     },
     {
-      path: "/main",
+      path: '/main',
       element: (
         <ProtectedRoute>
-          {" "}
-          <SidePanel />{" "}
+          {' '}
+          <SidePanel />{' '}
         </ProtectedRoute>
       ),
       children: [
         {
-          path: "dashboard",
+          path: 'dashboard',
           element: <Dashboard />,
         },
         {
-          path: "users",
+          path: 'users',
           element: <Users />,
         },
         {
-          path: "collections",
+          path: 'collections',
           element: <Collections />,
         },
         {
-          path: "categories",
+          path: 'categories',
           element: <Categories />,
         },
         {
-          path: "giftcards",
+          path: 'giftcards',
           element: <CombinedGiftList />,
         },
         {
-          path: "selectedgiftcards",
+          path: 'selectedgiftcards',
           element: <SelectedGiftCards />,
         },
         {
-          path: "bitaqatygiftcard",
+          path: 'bitaqatygiftcard',
           element: <BitaqatyGiftCards />,
         },
         {
-          path: "binance",
+          path: 'binance',
           element: <Binance />,
         },
         {
-          path: "binanceOrders",
+          path: 'binanceOrders',
           element: <BinanceOrders />,
         },
         {
-          path: "cmsManagement",
+          path: 'cmsManagement',
           element: <Cms />,
         },
         {
-          path: "orders",
+          path: 'orders',
           element: <Order />,
         },
         {
-          path: "customers",
+          path: 'customers',
           element: <Customer />,
         },
         {
-          path: "unauthorized",
+          path: 'unauthorized',
           element: <Unauthorized />,
         },
       ],

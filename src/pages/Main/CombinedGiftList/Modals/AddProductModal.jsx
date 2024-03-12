@@ -1,4 +1,4 @@
-import { Input, Select } from 'antd';
+import { Input, InputNumber, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import { handleStateChange } from '../../../../util/helper';
 
@@ -12,6 +12,7 @@ const AddProductModal = ({
 }) => {
   const [addProduct, setAddProduct] = useState({ isFeatured: false });
   const [newImage, setNewImage] = useState(null);
+  const [minQty, setMinQty] = useState(1);
 
   useEffect(() => {
     if (!addProduct) return;
@@ -39,6 +40,11 @@ const AddProductModal = ({
       setAddProduct((prev) => ({ ...prev, image: newImage }));
     }
   }, [newImage]);
+  useEffect(() => {
+    if (minQty) {
+      setAddProduct((prev) => ({ ...prev, minQty }));
+    }
+  }, [newImage]);
 
   useEffect(() => {
     setProductToAdd(addProduct);
@@ -58,49 +64,14 @@ const AddProductModal = ({
 
   return (
     <div style={{ color: 'black' }}>
-      <h4>
-        All the data will be inherited from the source which is selected <br />
-        Pleae enter following details for Platform use
-      </h4>
-
-      {/* <div style={{ marginTop: "10px" }}>
-        <label>Currency: {addProduct?.productDetails?.currency}</label>
-      </div> */}
-
-      <div style={{ marginTop: '10px' }}>
-        <label>Enter Price ({addProduct?.productDetails?.currency})</label>
+      <div style={{ marginBottom: '10px' }}>
+        <label>Title</label>
         <Input
-          type="number"
-          name="price"
-          value={addProduct?.price}
-          onChange={(e) => handleStateChange(e, setAddProduct)}
+          placeholder="Title"
+          name="title"
+          value={''}
+          onChange={(e) => handleStateChange(e, setNewBinance)}
         />
-      </div>
-
-      <div style={{ marginTop: '10px' }}>
-        <label>Price in SAR</label>
-        <Input
-          type="number"
-          name="priceInSAR"
-          value={addProduct?.priceInSAR}
-          onChange={(e) => handleStateChange(e, setAddProduct)}
-        />
-      </div>
-
-      <div style={{ marginTop: '10px' }}>
-        {newImage ? (
-          <img src={URL.createObjectURL(newImage)} width={50} height={50} />
-        ) : (
-          <img
-            src={
-              addProduct?.image?.includes('http')
-                ? addProduct?.image
-                : `${import.meta.env.VITE_REACT_APP_BACKEND_IMAGE_URL}/${
-                    addProduct?.image
-                  }`
-            }
-          />
-        )}
       </div>
 
       {allcollections && (
@@ -150,34 +121,50 @@ const AddProductModal = ({
           />
         </div>
       )}
+      <div style={{ marginTop: '10px' }}>
+        <label>Selling Price {addProduct?.productDetails?.currency}</label>
+        <Input
+          type="input"
+          name="price"
+          value={addProduct?.price}
+          onChange={(e) => handleStateChange(e, setAddProduct)}
+        />
+      </div>
 
+      <div style={{ marginTop: '10px' }}>
+        <label>Cost Price</label>
+        <Input
+          type="input"
+          name="priceInSAR"
+          value={addProduct?.priceInSAR}
+          onChange={(e) => handleStateChange(e, setAddProduct)}
+        />
+      </div>
+      <div style={{ marginBottom: '10px' }}>
+        <label>Min Qty</label>
+        <InputNumber
+          placeholder="minQty"
+          name="minQty"
+          min={1}
+          defaultValue={1}
+          style={{ width: '100%' }}
+          onChange={(value) => {
+            setMinQty(value);
+          }}
+        />
+      </div>
+      <div style={{ marginTop: '10px' }}>
+        {newImage ? (
+          <img src={URL.createObjectURL(newImage)} width={100} height={100} />
+        ) : (
+          ''
+        )}
+      </div>
       <div style={{ marginTop: '10px' }}>
         <label>Image</label>
         <Input type="file" onChange={(e) => setNewImage(e.target.files[0])} />
       </div>
 
-      <div
-        style={{
-          marginTop: '10px',
-          display: 'flex',
-          justifyContent: '',
-          width: '100%',
-          alignItems: 'center',
-        }}
-      >
-        <Input
-          type="checkbox"
-          name="isFeatured"
-          style={{ width: 'fit-content' }}
-          // value={addProduct?.priceInSAR}
-          onChange={(e) =>
-            setAddProduct((prev) => ({ ...prev, isFeatured: e.target.checked }))
-          }
-        />
-        <label style={{ marginLeft: '10px', width: '80%' }}>
-          Consider as a Feature product
-        </label>
-      </div>
       <div style={{ marginTop: '10px' }}>
         <label>Description</label>
         <Input
