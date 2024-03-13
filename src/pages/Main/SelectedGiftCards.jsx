@@ -19,6 +19,7 @@ import {
   fetchAllBinanceGifts,
   fetchAllBitaQtyThirdParty,
   getBitaqtyGifts,
+  updateBinance,
   updateproduct,
 } from '../../services/Product';
 import UpdateProductModal from './CombinedGiftList/Modals/UpdateProductModal';
@@ -26,6 +27,7 @@ import DeleteConformationModel from './CombinedGiftList/Modals/DeleteConformatio
 import { toast } from 'react-toastify';
 import AddBinanceModal from './Binance/Modals/AddBinanceModal';
 import AddProductModal from './CombinedGiftList/Modals/AddProductModal';
+import UpdateBinanceModal from './Binance/Modals/UpdateBinanceModal';
 
 const SelectedGiftCards = () => {
   const [gifts, setGifts] = useState(null);
@@ -50,6 +52,7 @@ const SelectedGiftCards = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [thirPartyOption, setThirdPartyOption] = useState(null);
   const [openAddProductModal, setOpenAddProductModal] = useState(false);
+  const [binanceToUpdate, setBinanceToUpdate] = useState(null);
 
   const [dataToWorkon, setDataToWorkOn] = useState({
     data: null,
@@ -165,6 +168,20 @@ const SelectedGiftCards = () => {
     }
   };
 
+  const handleBinanceUpdate = async () => {
+    if (binanceToUpdate) {
+      const { __v, ...data } = binanceToUpdate;
+      const { success, message } = await updateBinance(data);
+      if (success) {
+        toast.success(message);
+        handleCloseModal();
+      } else {
+        toast.error(message);
+        handleCloseModal();
+      }
+    }
+  };
+
   const handleDeleteProduct = async () => {
     const { success, message } = await deleteBinance(dataToWorkon.data);
     if (success) {
@@ -247,7 +264,7 @@ const SelectedGiftCards = () => {
       title: 'Base Token',
       dataIndex: 'baseToken',
       key: 'baseToken',
-      render: (baseToken) => baseToken || 'USDT',
+      render: (baseToken) => baseToken,
     },
     {
       title: 'Action',
@@ -422,17 +439,18 @@ const SelectedGiftCards = () => {
       <Modal
         open={dataToWorkon.isOpen && dataToWorkon.action === 'edit'}
         onCancel={handleCloseModal}
-        onOk={() => handleProductUpdate()}
+        onOk={() => handleBinanceUpdate()}
         title={'Update Product'}
         okText={'Update'}
       >
-        <UpdateProductModal
+        <UpdateBinanceModal
           data={dataToWorkon.data}
           setUpdatedProduct={setUpdatedProduct}
           allcategories={allcategories}
           allcollections={allcollections}
           selectedSubCategories={selectedSubCategories}
           setSelectedSubCategories={setSelectedSubCategories}
+          setBinanceToUpdate={setBinanceToUpdate}
         />
       </Modal>
     </>

@@ -106,15 +106,15 @@ export const SidePanel = () => {
               icon: <CreditCardOutlined />,
               label: 'GiftCard',
               children: [
-                // {
-                //   key: '4',
-                //   label: 'Bitaqaty GiftCard',
-                //   onClick: () => {
-                //     manageProtectionOnRouting('giftCards')
-                //       ? navigateTo('/main/bitaqatygiftcard')
-                //       : navigateTo('/main/unauthorized');
-                //   },
-                // },
+                {
+                  key: '4',
+                  label: 'Bitaqaty GiftCard',
+                  onClick: () => {
+                    manageProtectionOnRouting('giftCards')
+                      ? navigateTo('/main/bitaqatygiftcard')
+                      : navigateTo('/main/unauthorized');
+                  },
+                },
                 {
                   key: '5',
                   label: 'Our Giftcards',
@@ -126,15 +126,15 @@ export const SidePanel = () => {
                 },
               ],
             },
-            // {
-            //   icon: <PicRightOutlined />,
-            //   label: "Binance",
-            //   onClick: () => {
-            //     manageProtectionOnRouting("binance")
-            //       ? navigateTo("/main/binance")
-            //       : navigateTo("/main/unauthorized");
-            //   },
-            // },
+            {
+              icon: <PicRightOutlined />,
+              label: 'Binance',
+              onClick: () => {
+                manageProtectionOnRouting('binance')
+                  ? navigateTo('/main/binance')
+                  : navigateTo('/main/unauthorized');
+              },
+            },
             {
               key: '8',
               icon: <PicRightOutlined />,
