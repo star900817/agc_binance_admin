@@ -28,6 +28,8 @@ const AddProductModal = ({
     setAddProduct((prev) => ({
       ...prev,
       productDetails: data,
+      title: data.title,
+      baseToken: data.baseToken,
       image: data.image,
       colection: data.colection,
       price: data.costPriceAfterVat,
@@ -69,8 +71,8 @@ const AddProductModal = ({
         <Input
           placeholder="Title"
           name="title"
-          value={''}
-          onChange={(e) => handleStateChange(e, setNewBinance)}
+          value={addProduct?.title || ''}
+          onChange={(e) => handleStateChange(e, setAddProduct)}
         />
       </div>
 
@@ -121,6 +123,14 @@ const AddProductModal = ({
           />
         </div>
       )}
+      <div style={{ marginBottom: '10px' }}>
+        <label>Base Token</label>
+        <Input
+          placeholder="token"
+          name="baseToken"
+          onChange={(e) => handleStateChange(e, setAddProduct)}
+        />
+      </div>
       <div style={{ marginTop: '10px' }}>
         <label>Selling Price {addProduct?.productDetails?.currency}</label>
         <Input
