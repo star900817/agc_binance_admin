@@ -12,7 +12,7 @@
 .card {
   margin: 0 auto;
   border-radius: 21px;
-  padding: 20px 40px;
+  padding: 25px 70px;
   box-shadow: 0px 10px 36px -3px rgba(0, 0, 0, 0.1);
 }
 .ant-layout-has-sider {
@@ -88,7 +88,7 @@ button.subCatBtn:hover {
 
 .loginBtm {
   width: 100%;
-  min-width: 220px;
+  /* min-width: 220px; */
   text-align: center;
 }
 
@@ -123,4 +123,18 @@ button.subCatBtn:hover {
 .forget-password {
   text-align: right;
   margin-bottom: 12px;
+}
+.login-form-forgot{
+  text-align: right;
+}
+.blue-bg-theme{
+  background-color: #00B6DE;
+  color: white;
+  font-weight: 700;
+}
+.text-blue{
+  color: #00B6DE;
+}
+.text-dark-blue{
+  color: #00253F;
 }
