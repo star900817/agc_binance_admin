@@ -33,7 +33,7 @@ export const ForgetPassword = () => {
     <>
       <div className="form_container">
         <div className="card">
-          <h3 style={{ textAlign: "center" }}>Enter Registered Email</h3>
+          <h3 style={{ textAlign: "center" }} className="text-dark-blue">Enter Registered Email</h3>
           <Form name="normal_login" className="login-form" onFinish={onFinish}>
             <Form.Item
               name="email"
@@ -52,21 +52,23 @@ export const ForgetPassword = () => {
                 prefix={<UserOutlined className="site-form-item-icon" />}
                 placeholder="Email"
               />
+              
             </Form.Item>
+            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'end '}}>  <a className="login-form-forgot text-blue" onClick={() => navigate("/")}>
+                  Back to Login
+            </a></div>
 
             <Form.Item>
               <Space>
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="login-form-button"
+                  className="login-form-button blue-bg-theme"
+                  style={{width:'-webkit-fill-available'}}
                 >
                   Submit
                 </Button>
 
-                <a className="login-form-forgot" onClick={() => navigate("/")}>
-                  Back to Login
-                </a>
               </Space>
             </Form.Item>
           </Form>

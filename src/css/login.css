@@ -1,0 +1,92 @@
+.img-container{
+    display: flex;
+    justify-content: center;
+}
+.img-container img{
+    width: 25%;
+    margin: 0 5px;
+    object-fit: contain;
+}
+
+#normal_login > div{
+    margin-bottom: 45px;
+}
+
+#normal_login > div > div{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start ;
+    margin-bottom: unset !important;
+}
+#normal_login .ant-form-item-label{
+    text-align: left;
+}
+#normal_login .ant-form-item-label label{
+    color: #00253F;
+    font-weight: 700;
+}
+.ant-form-item-required::before{
+    display: none !important;
+}
+.forget-password{
+    display: flex;
+    justify-content: space-between;
+}
+.form_container{
+    /* background: url('/assets/login-bg.png') no-repeat #278aa9; */
+    background-image: url('/assets/login-bg-2.png');
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+.form_container .card{
+    background-color: white;
+}
+.ant-space-item{
+    width: -webkit-fill-available;
+}
+.loginBtm button{
+width: 100%;
+}
+.ant-form-item-control-input-content{
+    display: flex;
+    justify-content: center;
+}
+.ant-form-item-control-input-content > div{
+    width: 70%;
+}
+.password-div span{
+    color: #202224;
+    font-weight: 700;
+}
+.forget-password{
+    margin-bottom: 30px !important;
+    padding-top: 10px;
+}
+
+#normal_login input{
+    background-color: #F5F9FF;
+}
+
+#normal_login input::placeholder{
+    color: #A6A6A6;
+    /* font-size: 20px; */
+    font-weight: 500;
+}
+
+:where(.css-dev-only-do-not-override-xu9wm8).ant-checkbox-checked .ant-checkbox-inner{
+    background-color: unset;
+    border-color: #656565;
+}
+:where(.css-dev-only-do-not-override-xu9wm8).ant-checkbox .ant-checkbox-inner:after{
+    border: solid #656565;
+    border-width: 0 2px 2px 0;
+}
+.ant-checkbox-checked:not(.ant-checkbox-disabled):hover .ant-checkbox-inner{
+    background-color: unset !important;
+    border-color: #656565;
+}
+.ant-checkbox-wrapper:not(.ant-checkbox-wrapper-disabled):hover .ant-checkbox-inner,
+:where(.css-dev-only-do-not-override-xu9wm8).ant-checkbox:not(.ant-checkbox-disabled):hover .ant-checkbox-inner{
+    border-color: #656565;
+}
