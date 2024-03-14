@@ -36,18 +36,6 @@ const SelectedGiftCards = () => {
   const [mergedCopy, setMergedCopy] = useState(null);
   const searchInput = useRef(null);
 
-  const [sortParameters, setSortParameters] = useState({
-    category: '',
-    colection: '',
-    nameEn: '',
-    productID: '',
-  });
-
-  useEffect(() => {
-    const filtered = searchData(sortParameters, mergedCopy);
-    setGifts(filtered);
-  }, [sortParameters]);
-
   const [filteredGift, setFilteredGift] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [thirPartyOption, setThirdPartyOption] = useState(null);
@@ -68,6 +56,21 @@ const SelectedGiftCards = () => {
   const [selectedSubCategories, setSelectedSubCategories] = useState(null);
 
   const [binanceToAdd, setBinanceToAdd] = useState(null);
+
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+
+  const [sortParameters, setSortParameters] = useState({
+    category: '',
+    colection: '',
+    nameEn: '',
+    productID: '',
+  });
+
+  useEffect(() => {
+    const filtered = searchData(sortParameters, mergedCopy);
+    setAllBinance(filtered);
+  }, [sortParameters]);
 
   const handleOpenAddProductModal = () => {
     setOpenAddProductModal(true);
@@ -131,6 +134,7 @@ const SelectedGiftCards = () => {
 
     fetch();
   }, [dataToWorkon.isOpen]);
+
   const mergedDataSource = gifts && allBinance ? [...gifts, ...allBinance] : [];
 
   const handleCloseModal = () => {
@@ -196,6 +200,112 @@ const SelectedGiftCards = () => {
   const deleteProductModal = (data) => {
     setDataToWorkOn({ data: data, action: 'delete', isOpen: true });
   };
+
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div
+        style={{
+          padding: 8,
+        }}
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{
+            marginBottom: 8,
+            display: 'block',
+          }}
+        />
+        <Space>
+          <Button
+            onClick={() => {
+              clearFilters && handleReset(clearFilters);
+            }}
+            size="small"
+            style={{
+              width: 90,
+            }}
+          >
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({
+                closeDropdown: false,
+              });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+              close();
+            }}
+          >
+            Filter
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              close();
+            }}
+          >
+            close
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined
+        style={{
+          color: filtered ? '#1677ff' : undefined,
+        }}
+      />
+    ),
+    onFilter: (value, record) => {
+      if (Array.isArray(record[dataIndex])) {
+        return record[dataIndex].some((item) => {
+          return (
+            item['code']
+              ?.toString()
+              .toLowerCase()
+              .includes(value.toLowerCase()) ||
+            item['referenceNo']
+              ?.toString()
+              .toLowerCase()
+              .includes(value.toLowerCase())
+          );
+        });
+      } else {
+        return record[dataIndex]
+          .toString()
+          .toLowerCase()
+          .includes(value.toLowerCase());
+      }
+    },
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+  });
 
   const PlatformProuctTableColumns = [
     {
@@ -307,12 +417,13 @@ const SelectedGiftCards = () => {
           <Input
             placeholder="Enter card Id"
             value={sortParameters?.productID || ''}
-            onChange={(e) =>
+            onChange={(e) => (
+              console.log(e.target.value),
               setSortParameters((prev) => ({
                 ...prev,
                 productID: e.target.value,
               }))
-            }
+            )}
           />
         </div>
 
