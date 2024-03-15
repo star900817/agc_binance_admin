@@ -95,45 +95,45 @@ const getKeys = (searchObj) => {
 };
 
 export function searchData(searchObj, allData) {
+  // Extract the keys from searchObj that are not empty
   const keysToSearch = getKeys(searchObj);
 
-  if (keysToSearch <= 0) return allData;
+  if (keysToSearch.length === 0) return allData; // If no search criteria, return all data
 
-  const filtered = [];
-  for (let i = 0; i < allData.length; i += 1) {
-    let check = true;
-    const record = allData[i];
-
-    for (let j = 0; j < keysToSearch.length; j += 1) {
-      const key = keysToSearch[j];
-      if (key == 'colection') {
-        if (
-          !record[key]._id
-            ?.toString()
-            ?.toLowerCase()
-            ?.includes(searchObj[key].toString().toLowerCase())
-        ) {
-          check = false;
-          break;
-        }
-      } else if (
-        !record[key]
-          ?.toString()
-          ?.toLowerCase()
-          ?.includes(searchObj[key].toString().toLowerCase())
-      ) {
-        check = false;
-        break;
+  return allData.filter((record) => {
+    return keysToSearch.every((key) => {
+      // Handling nested 'colection' and 'category' object searches
+      if (key === 'colection' || key === 'category') {
+        const recordValue = record[key]?._id?.toString().toLowerCase();
+        const searchValue = searchObj[key]?.toString().toLowerCase();
+        return recordValue?.includes(searchValue);
       }
-    }
-
-    if (check) {
-      filtered.push(record);
-    }
-  }
-
-  if (filtered?.length) {
-    return filtered;
-  }
-  return [];
+      // Handling 'title' search
+      else if (key === 'title') {
+        const recordValue = record[key]?.toString().toLowerCase();
+        const searchValue = searchObj[key]?.toString().toLowerCase();
+        return recordValue?.includes(searchValue);
+      }
+      // Handling 'productID' search within 'giftCards' array
+      else if (key === 'productID') {
+        return record.giftCards?.some(
+          (giftCard) =>
+            giftCard.referenceNo
+              .toString()
+              .toLowerCase()
+              .includes(searchObj[key].toString().toLowerCase()) ||
+            giftCard.code
+              .toString()
+              .toLowerCase()
+              .includes(searchObj[key].toString().toLowerCase())
+        );
+      }
+      // General case for other keys
+      else {
+        const recordValue = record[key]?.toString().toLowerCase();
+        const searchValue = searchObj[key]?.toString().toLowerCase();
+        return recordValue?.includes(searchValue);
+      }
+    });
+  });
 }

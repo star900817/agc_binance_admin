@@ -1,18 +1,23 @@
-import { Input, InputNumber, Select } from 'antd';
-import { useEffect, useState } from 'react';
-import { handleStateChange } from '../../../../util/helper';
+import { Input, Select, InputNumber } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { getCollections } from '../../../../services/Collections';
+import { getCategories } from '../../../../services/categories';
+import {
+  getColections,
+  getCategoriesAndSubcategories,
+  handleStateChange,
+} from '../../../../util/helper';
 
-const AddProductModal = ({
-  data,
-  setProductToAdd,
-  allcollections,
-  allcategories,
-  selectedSubCategories,
-  setSelectedSubCategories,
-}) => {
-  const [addProduct, setAddProduct] = useState({ isFeatured: false });
+const AddProductModal = ({ setProductToAdd }) => {
+  const [addProduct, setAddProduct] = useState({
+    productTag: 'bitaqty',
+    minQty: 1,
+  });
   const [newImage, setNewImage] = useState(null);
   const [minQty, setMinQty] = useState(1);
+  const [allcollections, setAllcollections] = useState(null);
+  const [allcategories, setAllcategories] = useState(null);
+  const [selectedSubCategories, setSelectedSubCategories] = useState(null);
 
   useEffect(() => {
     if (!addProduct) return;
@@ -25,28 +30,39 @@ const AddProductModal = ({
   }, [addProduct?.category]);
 
   useEffect(() => {
-    setAddProduct((prev) => ({
-      ...prev,
-      productDetails: data,
-      title: data.title,
-      baseToken: data.baseToken,
-      image: data.image,
-      colection: data.colection,
-      price: data.costPriceAfterVat,
-      priceInSAR: data.costPriceAfterVat * 3.75,
-    }));
-  }, [data]);
+    async function fetch() {
+      const allCollections = await getCollections();
+      setAllcollections(getColections(allCollections.data));
+
+      const allCategories = await getCategories();
+      const { category, subCategories } = getCategoriesAndSubcategories(
+        allCategories?.data
+      );
+      setAllcategories({ category, subCategories });
+    }
+
+    fetch();
+  }, []);
 
   useEffect(() => {
     if (newImage) {
       setAddProduct((prev) => ({ ...prev, image: newImage }));
     }
   }, [newImage]);
+
   useEffect(() => {
     if (minQty) {
       setAddProduct((prev) => ({ ...prev, minQty }));
     }
-  }, [newImage]);
+  }, [minQty]);
+
+  useEffect(() => {
+    setAddProduct((prev) => ({
+      ...prev,
+      baseToken: addProduct?.baseToken,
+      baseToken: 'USDT',
+    }));
+  }, [addProduct?.baseToken]);
 
   useEffect(() => {
     setProductToAdd(addProduct);
@@ -55,14 +71,16 @@ const AddProductModal = ({
   useEffect(() => {
     setAddProduct((prev) => ({
       ...prev,
-      productDetails: data,
-      image: data.image,
-      colection: data.colection,
-      price: data.costPriceAfterVat,
-      priceInSAR: data.priceInSAR,
-      description: data.description,
+      priceInSAR: addProduct?.priceInSAR,
     }));
-  }, [data]);
+  }, [addProduct?.priceInSAR]);
+
+  useEffect(() => {
+    setAddProduct((prev) => ({
+      ...prev,
+      description: addProduct?.description,
+    }));
+  }, [addProduct?.description]);
 
   return (
     <div style={{ color: 'black' }}>
@@ -131,22 +149,24 @@ const AddProductModal = ({
           onChange={(e) => handleStateChange(e, setAddProduct)}
         />
       </div>
-      <div style={{ marginTop: '10px' }}>
-        <label>Selling Price {addProduct?.productDetails?.currency}</label>
-        <Input
-          type="input"
-          name="price"
-          value={addProduct?.price}
-          onChange={(e) => handleStateChange(e, setAddProduct)}
-        />
-      </div>
 
       <div style={{ marginTop: '10px' }}>
         <label>Cost Price</label>
         <Input
           type="input"
+          placeholder="Cost Price"
           name="priceInSAR"
           value={addProduct?.priceInSAR}
+          onChange={(e) => handleStateChange(e, setAddProduct)}
+        />
+      </div>
+      <div style={{ marginTop: '10px' }}>
+        <label>Selling Price {addProduct?.productDetails?.currency}</label>
+        <Input
+          type="input"
+          placeholder="Selling Price"
+          name="price"
+          value={addProduct?.price}
           onChange={(e) => handleStateChange(e, setAddProduct)}
         />
       </div>
@@ -179,6 +199,7 @@ const AddProductModal = ({
         <label>Description</label>
         <Input
           type="string"
+          placeholder="Description"
           name="description"
           value={addProduct?.description}
           onChange={(e) => handleStateChange(e, setAddProduct)}

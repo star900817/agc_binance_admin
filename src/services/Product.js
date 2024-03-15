@@ -12,7 +12,6 @@ export const getBitaqtyGifts = async () => {
         },
       })
     ).data;
-    console.log('dddddddddddaaaaaaaaaaaa', result.data);
     return {
       success: result.success,
       message: result.message,

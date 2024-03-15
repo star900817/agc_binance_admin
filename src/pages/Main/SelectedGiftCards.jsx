@@ -13,163 +13,110 @@ import { getCollections } from '../../services/Collections';
 import { Button, Input, Modal, Select, Space, Table, Dropdown } from 'antd';
 import {
   addBinance,
-  addProduct,
   deleteBinance,
-  deleteProduct,
+  addProduct,
   fetchAllBinanceGifts,
   fetchAllBitaQtyThirdParty,
   getBitaqtyGifts,
   updateBinance,
   updateproduct,
 } from '../../services/Product';
-import UpdateProductModal from './CombinedGiftList/Modals/UpdateProductModal';
+
+import { deleteProduct as deleteBitaqty } from '../../services/Product';
+import UpdateBitaqtyModal from './CombinedGiftList/Modals/UpdateProductModal';
 import DeleteConformationModel from './CombinedGiftList/Modals/DeleteConformationModel';
 import { toast } from 'react-toastify';
 import AddBinanceModal from './Binance/Modals/AddBinanceModal';
-import AddProductModal from './CombinedGiftList/Modals/AddProductModal';
+import AddBitaqtyModal from './CombinedGiftList/Modals/AddProductModal';
 import UpdateBinanceModal from './Binance/Modals/UpdateBinanceModal';
 
 const SelectedGiftCards = () => {
   const [gifts, setGifts] = useState(null);
   const [allBinance, setAllBinance] = useState([]);
+  const [allcollections, setAllcollections] = useState(null);
+  const [allcategories, setAllcategories] = useState(null);
+  const [selectedSubCategories, setSelectedSubCategories] = useState(null);
+  const [mergedDataSource, setMergedDataSource] = useState(null);
+
+  const [openAddBinanceModal, setOpenAddBinanceModal] = useState(false);
+  const [binanceToAdd, setBinanceToAdd] = useState(null);
+  const [updatedProduct, setUpdatedProduct] = useState(null);
+  const [binanceToUpdate, setBinanceToUpdate] = useState(null);
+
+  const [openAddBitaqtyModal, setOpenAddBitaqtyModal] = useState(false);
 
   const [mergedCopy, setMergedCopy] = useState(null);
   const searchInput = useRef(null);
-
   const [filteredGift, setFilteredGift] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [thirPartyOption, setThirdPartyOption] = useState(null);
-  const [openAddProductModal, setOpenAddProductModal] = useState(false);
-  const [binanceToUpdate, setBinanceToUpdate] = useState(null);
-
+  const [productToAdd, setProductToAdd] = useState(null);
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
   const [dataToWorkon, setDataToWorkOn] = useState({
     data: null,
     action: '',
     isOpen: false,
   });
-
-  const [updatedProduct, setUpdatedProduct] = useState(null);
-  const [productToAdd, setProductToAdd] = useState(null);
-
-  const [allcollections, setAllcollections] = useState(null);
-  const [allcategories, setAllcategories] = useState(null);
-  const [selectedSubCategories, setSelectedSubCategories] = useState(null);
-
-  const [binanceToAdd, setBinanceToAdd] = useState(null);
-
-  const [searchText, setSearchText] = useState('');
-  const [searchedColumn, setSearchedColumn] = useState('');
-
   const [sortParameters, setSortParameters] = useState({
     category: '',
     colection: '',
-    nameEn: '',
+    title: '',
     productID: '',
   });
 
   useEffect(() => {
-    const filtered = searchData(sortParameters, mergedCopy);
-    setAllBinance(filtered);
-  }, [sortParameters]);
+    async function fetch() {
+      const allCollectionsRes = await getCollections();
+      const allCategoriesRes = await getCategories();
+      const binanceRes = await fetchAllBinanceGifts();
+      const bitaqtyRes = await getBitaqtyGifts();
 
-  const handleOpenAddProductModal = () => {
-    setOpenAddProductModal(true);
+      setAllcollections(getColections(allCollectionsRes.data));
+      setAllcategories(getCategoriesAndSubcategories(allCategoriesRes?.data));
+      setGifts(mergeObjects(bitaqtyRes.data));
+      setAllBinance(binanceRes?.data?.data || []);
+    }
+
+    fetch();
+  }, [dataToWorkon.isOpen, openAddBinanceModal, openAddBitaqtyModal]);
+
+  useEffect(() => {
+    if (Array.isArray(gifts) && Array.isArray(allBinance)) {
+      const mergedData = [...gifts, ...allBinance];
+      setMergedCopy(mergedData);
+      setMergedDataSource(mergedData);
+    }
+  }, [gifts, allBinance]);
+
+  const handleOpenAddBinanceModal = () => {
+    setOpenAddBinanceModal(true);
   };
-  const handleCloseAddProductModal = () => {
-    setOpenAddProductModal(false);
-  };
-  const handleAddProduct = async () => {
+
+  const handleAddBinance = async () => {
     if (binanceToAdd) {
       const { success, message } = await addBinance(binanceToAdd);
       if (success) {
+        setOpenAddBinanceModal();
         toast.success(message);
-        setOpenAddProductModal();
       } else {
+        setOpenAddBinanceModal();
         toast.error(message);
-        setOpenAddProductModal();
       }
     }
   };
-  const handleAddBitaqty = () => {};
-  const addProductModal = (data) => {
-    setDataToWorkOn({ data: data, action: 'add', isOpen: true });
-  };
-  const items = [
-    {
-      key: '1',
-      label: <a onClick={handleOpenAddProductModal}>Add Binance</a>,
-    },
-    {
-      key: '2',
-      label: <a onClick={addProductModal}>Add Bitaqty</a>,
-    },
-  ];
 
-  useEffect(() => {
-    async function fetch() {
-      const allCollections = await getCollections();
-      setAllcollections(getColections(allCollections.data));
-
-      const allCategories = await getCategories();
-      const { category, subCategories } = getCategoriesAndSubcategories(
-        allCategories?.data
-      );
-      setAllcategories({ category, subCategories });
-    }
-
-    fetch();
-  }, []);
-
-  useEffect(() => {
-    async function fetch() {
-      const response = await getBitaqtyGifts();
-      const binance = await fetchAllBinanceGifts();
-
-      const gifts = response.data;
-      setGifts(mergeObjects(gifts));
-      setAllBinance(binance?.data?.data);
-
-      setMergedCopy(mergeObjects(mergedDataSource));
-    }
-
-    fetch();
-  }, [dataToWorkon.isOpen]);
-
-  const mergedDataSource = gifts && allBinance ? [...gifts, ...allBinance] : [];
-
-  const handleCloseModal = () => {
-    setDataToWorkOn({ data: null, action: '', isOpen: false });
+  const handleCloseAddBinanceModal = () => {
+    setOpenAddBinanceModal(false);
   };
 
   const editProductModal = (data) => {
-    setDataToWorkOn({ data: data, action: 'edit', isOpen: true });
-  };
-
-  const handleProductUpdate = async () => {
-    console.log('updatedProduct', updatedProduct);
-
-    // if (updatedProduct.category === '65ceea33eab1a9c024f6e9d7') {
-    //   updatedProduct.subCategory = ''; // Set subCategory to an empty string
-    //   updatedProduct.productDetails.subCategory = '';
-    // }
-
-    if (updatedProduct) {
-      // console.log('category', updatedProduct.category);
-      // console.log('subcategory', updatedProduct.subCategory);
-      // console.log('details', updatedProduct.productDetails.subCategory);
-
-      const { success, message } = await updateproduct(updatedProduct);
-
-      console.log('success', success);
-
-      if (success) {
-        toast.success(message);
-        handleCloseModal();
-      } else {
-        toast.error(message);
-        handleCloseModal();
-      }
-    }
+    setDataToWorkOn({
+      data: data,
+      action: 'edit',
+      isOpen: true,
+      type: 'binance',
+    });
   };
 
   const handleBinanceUpdate = async () => {
@@ -186,10 +133,20 @@ const SelectedGiftCards = () => {
     }
   };
 
-  const handleDeleteProduct = async () => {
+  const deleteProductModal = (data) => {
+    setDataToWorkOn({
+      data: data,
+      action: 'delete',
+      isOpen: true,
+      type: 'binance',
+    });
+  };
+
+  const handleDeleteBinance = async () => {
     const { success, message } = await deleteBinance(dataToWorkon.data);
     if (success) {
-      toast.success(message);
+      toast.success('Product deleted successfully');
+      // toast.success(message);
       handleCloseModal();
     } else {
       toast.error(message);
@@ -197,115 +154,67 @@ const SelectedGiftCards = () => {
     }
   };
 
-  const deleteProductModal = (data) => {
-    setDataToWorkOn({ data: data, action: 'delete', isOpen: true });
+  const handleCloseModal = () => {
+    setDataToWorkOn({ data: null, action: '', isOpen: false, type: '' });
   };
 
-  const handleSearch = (selectedKeys, confirm, dataIndex) => {
-    confirm();
-    setSearchText(selectedKeys[0]);
-    setSearchedColumn(dataIndex);
+  const handleOpenAddBitaqtyModal = () => {
+    setOpenAddBitaqtyModal(true);
   };
-
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-      close,
-    }) => (
-      <div
-        style={{
-          padding: 8,
-        }}
-        onKeyDown={(e) => e.stopPropagation()}
-      >
-        <Input
-          ref={searchInput}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={(e) =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{
-            marginBottom: 8,
-            display: 'block',
-          }}
-        />
-        <Space>
-          <Button
-            onClick={() => {
-              clearFilters && handleReset(clearFilters);
-            }}
-            size="small"
-            style={{
-              width: 90,
-            }}
-          >
-            Reset
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              confirm({
-                closeDropdown: false,
-              });
-              setSearchText(selectedKeys[0]);
-              setSearchedColumn(dataIndex);
-              close();
-            }}
-          >
-            Filter
-          </Button>
-          <Button
-            type="link"
-            size="small"
-            onClick={() => {
-              close();
-            }}
-          >
-            close
-          </Button>
-        </Space>
-      </div>
-    ),
-    filterIcon: (filtered) => (
-      <SearchOutlined
-        style={{
-          color: filtered ? '#1677ff' : undefined,
-        }}
-      />
-    ),
-    onFilter: (value, record) => {
-      if (Array.isArray(record[dataIndex])) {
-        return record[dataIndex].some((item) => {
-          return (
-            item['code']
-              ?.toString()
-              .toLowerCase()
-              .includes(value.toLowerCase()) ||
-            item['referenceNo']
-              ?.toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
-          );
-        });
+  const handleAddBitaqty = async () => {
+    if (productToAdd) {
+      console.log(productToAdd);
+      const { success, message } = await addBinance(productToAdd);
+      if (success) {
+        setOpenAddBitaqtyModal();
+        toast.success('Bitaqty Card added successfully');
       } else {
-        return record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes(value.toLowerCase());
+        setOpenAddBitaqtyModal();
+        toast.error(message);
       }
-    },
-    onFilterDropdownOpenChange: (visible) => {
-      if (visible) {
-        setTimeout(() => searchInput.current?.select(), 100);
+    }
+  };
+  const handleCloseAddBitaqtyModal = () => {
+    setOpenAddBitaqtyModal(false);
+  };
+  const handleBitaqtyUpdate = async () => {
+    if (updatedProduct) {
+      const { success, message } = await updateproduct(updatedProduct);
+      if (success) {
+        toast.success(message);
+        handleCloseModal();
+      } else {
+        toast.error(message);
+        handleCloseModal();
       }
+    }
+  };
+  const handleDeleteBitaqty = async () => {
+    const { success, message } = await deleteBitaqty(dataToWorkon.data);
+    if (success) {
+      toast.success('Bitaqty Card deleted successfully');
+      handleCloseModal();
+    } else {
+      toast.error(message);
+      handleCloseModal();
+    }
+  };
+
+  const items = [
+    {
+      key: '1',
+      label: <a onClick={handleOpenAddBinanceModal}>Add Binance</a>,
     },
-  });
+    {
+      key: '2',
+      label: <a onClick={handleOpenAddBitaqtyModal}>Add Bitaqty</a>,
+    },
+  ];
+
+  useEffect(() => {
+    const filtered = searchData(sortParameters, mergedCopy);
+    setMergedDataSource(filtered);
+  }, [sortParameters]);
 
   const PlatformProuctTableColumns = [
     {
@@ -432,11 +341,11 @@ const SelectedGiftCards = () => {
           <br />
           <Input
             placeholder="Enter card name"
-            value={sortParameters?.nameEn || ''}
+            value={sortParameters?.title || ''}
             onChange={(e) =>
               setSortParameters((prev) => ({
                 ...prev,
-                nameEn: e.target.value,
+                title: e.target.value,
               }))
             }
           />
@@ -510,21 +419,11 @@ const SelectedGiftCards = () => {
         pagination={{ defaultPageSize: 5 }}
         rowKey={(record) => record._id}
       />
+
       <Modal
-        open={dataToWorkon.isOpen && dataToWorkon.action === 'delete'}
-        onCancel={handleCloseModal}
-        onOk={() => handleDeleteProduct()}
-        title={'Delete Confirmation'}
-        okText={'Delete'}
-      >
-        {dataToWorkon.action === 'delete' ? (
-          <DeleteConformationModel productId={dataToWorkon.data} />
-        ) : null}
-      </Modal>
-      <Modal
-        open={openAddProductModal}
-        onCancel={handleCloseAddProductModal}
-        onOk={() => handleAddProduct()}
+        open={openAddBinanceModal}
+        onCancel={handleCloseAddBinanceModal}
+        onOk={() => handleAddBinance()}
         title={'Add binance'}
         okText={'Add'}
       >
@@ -532,23 +431,11 @@ const SelectedGiftCards = () => {
       </Modal>
 
       <Modal
-        open={dataToWorkon.isOpen && dataToWorkon.action === 'add'}
-        onCancel={handleCloseModal}
-        onOk={() => handleAddBitaqty()}
-        title={'Add Bitaqty'}
-        okText={'Add Product'}
-      >
-        <AddProductModal
-          data={dataToWorkon.data}
-          setProductToAdd={setProductToAdd}
-          allcollections={allcollections}
-          allcategories={allcategories}
-          selectedSubCategories={selectedSubCategories}
-          setSelectedSubCategories={setSelectedSubCategories}
-        />
-      </Modal>
-      <Modal
-        open={dataToWorkon.isOpen && dataToWorkon.action === 'edit'}
+        open={
+          dataToWorkon.isOpen &&
+          dataToWorkon.action === 'edit' &&
+          dataToWorkon.type === 'binance'
+        }
         onCancel={handleCloseModal}
         onOk={() => handleBinanceUpdate()}
         title={'Update Product'}
@@ -563,6 +450,70 @@ const SelectedGiftCards = () => {
           setSelectedSubCategories={setSelectedSubCategories}
           setBinanceToUpdate={setBinanceToUpdate}
         />
+      </Modal>
+
+      <Modal
+        open={
+          dataToWorkon.isOpen &&
+          dataToWorkon.action === 'delete' &&
+          dataToWorkon.type === 'binance'
+        }
+        onCancel={handleCloseModal}
+        onOk={() => handleDeleteBinance()}
+        title={'Delete Confirmation'}
+        okText={'Delete'}
+      >
+        {dataToWorkon.action === 'delete' ? (
+          <DeleteConformationModel productId={dataToWorkon.data} />
+        ) : null}
+      </Modal>
+
+      <Modal
+        open={openAddBitaqtyModal}
+        onCancel={handleCloseAddBitaqtyModal}
+        onOk={() => handleAddBitaqty()}
+        title={'Add Bitaqty'}
+        okText={'Add Product'}
+      >
+        <AddBitaqtyModal setProductToAdd={setProductToAdd} />
+      </Modal>
+
+      <Modal
+        open={
+          dataToWorkon.isOpen &&
+          dataToWorkon.action === 'edit' &&
+          dataToWorkon.type === 'bitaqty'
+        }
+        onCancel={handleCloseModal}
+        onOk={() => handleBitaqtyUpdate()}
+        title={'Update Product'}
+        okText={'Update'}
+      >
+        <UpdateBitaqtyModal
+          data={dataToWorkon.data}
+          setUpdatedProduct={setUpdatedProduct}
+          allcategories={allcategories}
+          allcollections={allcollections}
+          selectedSubCategories={selectedSubCategories}
+          setSelectedSubCategories={setSelectedSubCategories}
+          setBinanceToUpdate={setBinanceToUpdate}
+        />
+      </Modal>
+
+      <Modal
+        open={
+          dataToWorkon.isOpen &&
+          dataToWorkon.action === 'delete' &&
+          dataToWorkon.type === 'bitaqty'
+        }
+        onCancel={handleCloseModal}
+        onOk={() => handleDeleteBitaqty()}
+        title={'Delete Confirmation'}
+        okText={'Delete'}
+      >
+        {dataToWorkon.action === 'delete' ? (
+          <DeleteConformationModel productId={dataToWorkon.data} />
+        ) : null}
       </Modal>
     </>
   );

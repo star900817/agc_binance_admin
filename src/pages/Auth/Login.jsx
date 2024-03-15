@@ -1,19 +1,19 @@
-import { Form, Input, Button, Space, Checkbox } from "antd";
+import { Form, Input, Button, Space, Checkbox } from 'antd';
 // import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../services/Auth";
-import { toast } from "react-toastify";
-import '../../css/login.css'
+import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../services/Auth';
+import { toast } from 'react-toastify';
+import '../../css/login.css';
 
 export const Login = () => {
   let navigate = useNavigate();
 
   const onFinish = async (values) => {
     let { success, message } = await login(values.email, values.password);
-    console.log("data", success, message);
+    console.log('data', success, message);
     if (success) {
       toast.success(message);
-      navigate("/main/dashboard");
+      navigate('/main/dashboard');
     } else {
       toast.error(message);
     }
@@ -25,27 +25,32 @@ export const Login = () => {
         <div className="card">
           <div className="img-container">
             <img src="/assets/logo1.png" />
-             <img src="/assets/logo2.png"/>
+            <img src="/assets/logo2.png" />
           </div>
-          <h3 style={{ textAlign: "center", fontSize: "25px" }} className="text-dark-blue">Login to Account</h3>
+          <h3
+            style={{ textAlign: 'center', fontSize: '25px' }}
+            className="text-dark-blue"
+          >
+            Login to Account
+          </h3>
           <Form name="normal_login" className="login-form" onFinish={onFinish}>
             <Form.Item
-              label= "Email address"
+              label="Email address"
               name="email"
               rules={[
-                { 
-                  type: "email",
-                  message: "The input is not valid E-mail!",
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
                 },
                 {
                   required: true,
-                  message: "Please input your Email!",
+                  message: 'Please input your Email!',
                 },
               ]}
             >
               <Input
                 // prefix={<UserOutlined className="site-form-item-icon" />}
-                placeholder="esteban_schiller@gmail.com"
+                placeholder="Email"
               />
             </Form.Item>
             <Form.Item
@@ -54,7 +59,7 @@ export const Login = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please input your Password!",
+                  message: 'Please input your Password!',
                 },
               ]}
             >
@@ -65,15 +70,21 @@ export const Login = () => {
               />
             </Form.Item>
             <div className="forget-password ">
-              <Link to="/forgetPassword" className="login-form-forgot text-blue">
+              <Link
+                to="/forgetPassword"
+                className="login-form-forgot text-blue"
+              >
                 Forget Password
               </Link>
-              <div style={{ display: "flex", flexDirection: "row" }} className="password-div">
-                 <Checkbox  style={{ marginRight: '5px' }}/>
+              <div
+                style={{ display: 'flex', flexDirection: 'row' }}
+                className="password-div"
+              >
+                <Checkbox style={{ marginRight: '5px' }} />
                 <span> Remember Password </span>
-             </div>
+              </div>
             </div>
-            <Form.Item>     
+            <Form.Item>
               <Space>
                 <div className="loginBtm">
                   <Button
