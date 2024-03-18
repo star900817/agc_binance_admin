@@ -13,6 +13,7 @@ import {
 import { Layout, Menu, Button, theme, Avatar, Dropdown, Space } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
+import '../../css/side-bar.css'
 
 export const SidePanel = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -55,10 +56,14 @@ export const SidePanel = () => {
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider className='slider' style={{background:"white"}} trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
+         <div className="img-container">
+            <img src="/assets/logo1.png" />
+            <img src="/assets/logo2.png" />
+          </div>
         <Menu
-          theme="dark"
+          theme="light"
           mode="inline"
           defaultSelectedKeys={[key]}
           items={[
@@ -75,7 +80,7 @@ export const SidePanel = () => {
             {
               key: '2',
               icon: <UserOutlined />,
-              label: 'Users',
+              label: 'Staff members',
               onClick: () => {
                 manageProtectionOnRouting('users')
                   ? navigateTo('/main/users', '2')

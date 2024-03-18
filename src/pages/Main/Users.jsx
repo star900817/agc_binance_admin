@@ -1,6 +1,7 @@
-import { Button, Space, Table, Modal, Select, InputNumber } from "antd";
+import { Button, Space, Table, Modal, Select, InputNumber, Tag } from "antd";
 import { Form, Input } from "antd";
 import { SearchOutlined } from '@ant-design/icons';
+import '../../css/table.css'
 const { Option } = Select;
 
 import { useRef, useEffect, useState } from "react";
@@ -13,9 +14,10 @@ import {
 import { toast } from "react-toastify";
 import FormItem from "antd/es/form/FormItem";
 import { country, userRoleBase, userRoleSelect } from "../../util/constant";
-import { handleStateChange, searchData } from "../../util/helper";
+import { handleStateChange, searchData } from "../../util/helper"
 
 export const Users = () => {
+
   const [usersList, setUsersList] = useState([]);
   const [copyUserList, setCopyUserList] = useState([]);
 
@@ -235,6 +237,22 @@ export const Users = () => {
       title: "Role",
       dataIndex: "role",
       key: "role",
+    //       render: (_, { role }) => (
+    //   <>
+    //     {role.map((role) => {
+    //       let color = role==='admin' ? 'geekblue' : 'green';
+    //       if (role === 'loser') {
+    //         color = 'volcano';
+    //       }
+    //       return (
+    //         <Tag color={color} key={role}>
+    //           {role.toUpperCase()}
+    //         </Tag>
+    //       );
+    //     })}
+    //   </>
+      // ),
+         render: (role) => <span style={{ color: role =='admin'? '#EB00FF': '#018AA9', backgroundColor: role == 'admin' ? '#F7EAFF' : '#E2F9FF',  padding: '7px 15px', borderRadius:'6px'}}>{role}</span>
     },
     {
       title: "Email",

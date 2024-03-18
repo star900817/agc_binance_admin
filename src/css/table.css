@@ -1,0 +1,37 @@
+.ant-btn-primary{
+    background-color: #00B6DE;
+    color: white;
+}
+.ant-layout{
+    background-color: #f5f6fa;
+}
+h4{
+    color: #00253F !important;
+    font-size: 24px !important;
+    margin: 15px 0 !important;
+}
+th{
+    color: #00253F !important;  
+    font-weight: 700 !important;
+}
+table{
+    font-size: 16px;
+    font-weight: 500;
+}
+main{
+    background: #f5f6fa !important;
+}
+tbody{
+    background-color: white;
+}
+.ant-table-pagination.ant-pagination{
+    justify-content: center;
+}
+.ant-pagination-item-active{
+    background-color: #00B6DE !important;
+    color: white !important;
+    border: 0 !important;
+}
+.ant-pagination-item-active a{
+    color: white !important;
+}
