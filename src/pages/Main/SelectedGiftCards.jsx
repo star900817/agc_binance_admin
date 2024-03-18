@@ -64,6 +64,7 @@ const SelectedGiftCards = () => {
     title: '',
     productID: '',
   });
+  const imageUrl = import.meta.env.VITE_REACT_APP_BACKEND_IMAGE_URL;
 
   useEffect(() => {
     async function fetch() {
@@ -284,6 +285,11 @@ const SelectedGiftCards = () => {
       dataIndex: 'baseToken',
       key: 'baseToken',
       render: (baseToken) => baseToken,
+    },   {
+      title: 'Image',
+      dataIndex: 'image',
+      key: 'image',
+      render: (image) => <img src={`${imageUrl}/${image}`} style={{height:'40px', width:'40px', border: '1px solid #E1E1E1', borderRadius: '2px'}}/>,
     },
     {
       title: 'Action',

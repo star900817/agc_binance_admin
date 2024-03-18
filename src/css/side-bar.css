@@ -1,0 +1,12 @@
+.ant-menu-item-selected {
+    background-color: #00B6DE !important;
+    color: white !important;
+}
+.img-container{
+    margin: 25px 0;
+}
+.img-container img {
+    width: 28%;
+    margin: 0 5px;
+    object-fit: contain;
+}
