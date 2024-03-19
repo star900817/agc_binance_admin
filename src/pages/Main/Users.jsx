@@ -252,7 +252,7 @@ export const Users = () => {
     //     })}
     //   </>
       // ),
-         render: (role) => <span style={{ color: role =='admin'? '#EB00FF': '#018AA9', backgroundColor: role == 'admin' ? '#F7EAFF' : '#E2F9FF',  padding: '7px 15px', borderRadius:'6px'}}>{role}</span>
+         render: (role) => <span style={{ color: role =='admin'? '#EB00FF': '#018AA9', backgroundColor: role == 'admin' ? '#F7EAFF' : '#E2F9FF',  padding: '7px 15px', borderRadius:'6px', width: '75px', display: 'inline-flex', justifyContent: 'center'}}>{role}</span>
     },
     {
       title: "Email",

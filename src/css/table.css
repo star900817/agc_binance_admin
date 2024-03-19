@@ -18,6 +18,9 @@ table{
     font-size: 16px;
     font-weight: 500;
 }
+.ant-table-wrapper table, .ant-table-wrapper table th{
+    text-align: center !important;
+}
 main{
     background: #f5f6fa !important;
 }
@@ -34,4 +37,107 @@ tbody{
 }
 .ant-pagination-item-active a{
     color: white !important;
+}
+.toggle-btn{
+    display: flex;
+    margin-left: 10px;
+    background-color: white;
+    height: fit-content;
+    margin-top: 15px;
+    padding: 5px;
+    border: 0.5px solid #d9d9d9;
+    border-radius: 8px;
+}
+.toggle-btn button{
+    padding: unset;
+    width: fit-content;
+    margin: unset !important;
+    padding: 6px
+}
+.ant-btn-default{
+    border-color: transparent;
+}
+.toggle-btn button svg path{
+    fill: #AEAEAE !important
+}
+.toggle-btn .active{
+    background-color: #C0ECF6;
+}
+.toggle-btn .active path{
+    fill: #018AA9 !important
+}
+.toggle-btn button:focus, .toggle-btn button:active, .toggle-btn button:hover{
+    outline: 0;
+    border-color: transparent !important;
+}
+.main-outer-div{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+    
+    /* display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px; */
+
+}
+.img-div, .info-div{
+    position: relative;
+}
+.img-div img{
+    height: 270px;
+    object-fit: contain;
+    border-radius: 8px;
+    width: -webkit-fill-available;
+}
+.main-inner-div {
+    background-color: white;
+    padding: 10px;
+    border-radius: 12px;
+    width: 340px
+}
+.btn-div{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+}
+.btn-div button{
+    color: #018AA9;
+    font-size: 12px;
+    background-color: #C0ECF6;
+    border-radius: 4px;
+    padding: 5px 10px;
+}
+.btn-div button:focus{
+    outline: 0;
+}
+.edit-btn{
+    margin-right: 10px;
+}
+.delete-btn{
+    background-color: white !important;
+    color: #FF5555 !important;
+    border-color: #FF5555 !important;
+}
+.price-div{
+    position: absolute;
+    bottom: 0px;
+    right: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.info-div h3{
+ font-size: 16px;
+ font-weight: 700;
+}
+.info-div p{
+    font-size: 14px;
+    color: #018AA9;
+    font-weight: 700;
+}
+.list-item{
+    text-decoration: none;
+    list-style-type: none
 }
