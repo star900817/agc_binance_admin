@@ -90,7 +90,7 @@ const Order = () => {
       dataIndex: 'Payment Status',
       key: 'isPaymentSuccess',
       render: (text, record) => (
-        <Tag color={record?.isPaymentSuccess ? '#87d068' : '#f50'} style={{fontSize: '16px', padding: '2px'}}>
+        <Tag color={record?.isPaymentSuccess ? '#87d068' : '#f50'} style={{fontSize: '14px', padding: '2px'}}>
           {record?.isPaymentSuccess ? 'Payment Success' : 'Abandoned checkouts'}
         </Tag>
       ),
