@@ -148,20 +148,15 @@ export const updateBinance = async (data) => {
 export const addProduct = async (data) => {
   try {
     const addProductFormData = new FormData();
+    addProductFormData.append('title', data.title);
+    addProductFormData.append('minQty', data.minQty);
+    addProductFormData.append('price', data.price);
     addProductFormData.append('image', data.image);
     addProductFormData.append('category', data.category);
     addProductFormData.append('colection', data.colection);
     addProductFormData.append('subCategory', data.subCategory);
     addProductFormData.append('priceInSAR', data.priceInSAR);
-    addProductFormData.append('isFeatured', data.isFeatured);
-    addProductFormData.append(
-      'productDetails',
-      JSON.stringify(data.productDetails)
-    );
     addProductFormData.append('description', data.description);
-
-    data?.price && addProductFormData.append('price', data?.price || 0);
-
     let result = await axios.post(
       `${url}/addBitaqtyGifts`,
       addProductFormData,
