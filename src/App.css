@@ -1,3 +1,7 @@
+body li, h4, label, a, th, button, td {
+    font-family: "Tajawal", sans-serif !important;
+}
+
 .login-form {
   max-width: 300px;
   margin: 0 auto;

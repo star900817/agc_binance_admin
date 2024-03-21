@@ -12,7 +12,7 @@ import { getCollections } from '../../services/Collections';
 import GridLogo from '../../assets/grid-icon.svg'
 import ListLogo from '../../assets/list-icon.svg'
 
-import { Button, Input, Modal, Select, Space, Table, Dropdown } from 'antd';
+import { Button, Input, Modal, Select, Space, Table, Dropdown, Pagination } from 'antd';
 import {
   addBinance,
   deleteBinance,
@@ -57,6 +57,10 @@ const SelectedGiftCards = () => {
   const [productToAdd, setProductToAdd] = useState(null);
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+
   const [dataToWorkon, setDataToWorkOn] = useState({
     data: null,
     action: '',
@@ -221,6 +225,14 @@ const SelectedGiftCards = () => {
     setMergedDataSource(filtered);
   }, [sortParameters]);
 
+
+const startIndex = (currentPage - 1) * itemsPerPage;
+const endIndex = startIndex + itemsPerPage;
+const currentItems = mergedDataSource?.slice(startIndex, endIndex);
+
+const totalPages = Math.ceil(mergedDataSource?.length / itemsPerPage);
+
+  // console.log(totalPages,'totaal/////', currentPage)
 
   const PlatformProuctTableColumns = [
     {
@@ -469,8 +481,8 @@ const SelectedGiftCards = () => {
       />: null}
 
       
-      {layout==='grid'?  <div className='main-outer-div'>
-        {mergedDataSource && mergedDataSource.map((item, index) => (
+      {layout==='grid'? <> <div className='main-outer-div'>
+        {currentItems && currentItems.map((item, index) => (
         <GridView
           key={index}
           image={item?.image}
@@ -480,7 +492,15 @@ const SelectedGiftCards = () => {
           onDelete={() => deleteProductModal(item._id, item.key)}
           onUpdate={() => editProductModal(item)}
         />
-      ))}</div>: null}
+        ))} </div><div style={{ margin: '30px', textAlign: 'center', paddingBottom: '20px' }}>
+          <Pagination
+            current={currentPage}
+            total={mergedDataSource?.length}
+            pageSize={itemsPerPage}
+            pageSizeOptions={['10', '12', '20', '50', '100']}
+            
+            onChange={page => setCurrentPage(page)}
+    /></div></>: null}
      
       
       <Modal
