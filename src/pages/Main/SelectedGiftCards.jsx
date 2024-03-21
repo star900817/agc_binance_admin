@@ -172,8 +172,8 @@ const SelectedGiftCards = () => {
   };
   const handleAddBitaqty = async () => {
     if (productToAdd) {
-      console.log(productToAdd);
-      const { success, message } = await addBinance(productToAdd);
+      console.log('details', productToAdd);
+      const { success, message } = await addProduct(productToAdd);
       if (success) {
         setOpenAddBitaqtyModal();
         toast.success('Bitaqty Card added successfully');
@@ -302,11 +302,22 @@ const totalPages = Math.ceil(mergedDataSource?.length / itemsPerPage);
       dataIndex: 'baseToken',
       key: 'baseToken',
       render: (baseToken) => baseToken,
-    },   {
+    },
+    {
       title: 'Image',
       dataIndex: 'image',
       key: 'image',
-      render: (image) => <img src={`${imageUrl}/${image}`} style={{height:'40px', width:'40px', border: '1px solid #E1E1E1', borderRadius: '2px'}}/>,
+      render: (image) => (
+        <img
+          src={`${imageUrl}/${image}`}
+          style={{
+            height: '40px',
+            width: '40px',
+            border: '1px solid #E1E1E1',
+            borderRadius: '2px',
+          }}
+        />
+      ),
     },
     {
       title: 'Action',
