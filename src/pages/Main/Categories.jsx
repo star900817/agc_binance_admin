@@ -356,11 +356,11 @@ const Categories = () => {
               onClick={() => downCategoryOrder(index)} />
 
             <DeleteOutlined
-              style={{ margin: "0 15px 0 0", cursor: "pointer" }}
+              style={{ margin: "0 15px 0 0", cursor: "pointer", color: '#F93C65' }}
               onClick={() => deleteCategoryData(record._id)}
             />
             <EditOutlined
-              style={{ margin: "0 15px 0 0", cursor: "pointer" }}
+              style={{ margin: "0 15px 0 0", cursor: "pointer", color: '#00B6DE' }}
               onClick={() => editCtaegoryData(record._id)}
             />
           </>

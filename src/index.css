@@ -2,7 +2,7 @@
   /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif; */
   line-height: 1.5;
   font-weight: 400;
-font-family: "Tajawal", sans-serif;
+  font-family: "Tajawal", sans-serif;
   font-weight: 400;
   font-style: normal;
   color-scheme: light dark;
@@ -75,4 +75,24 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+::-webkit-scrollbar {
+  background-color: #fff;
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #D9D9D9;
+  border-radius: 8px;
+}
+
+/* scrollbar itself */
+::-webkit-scrollbar-thumb {
+  background-color: #babac0;
+  border-radius: 8px;
+}
+
+/* set button(top and bottom of the scrollbar) */
+::-webkit-scrollbar-button {
+  display: none;
 }

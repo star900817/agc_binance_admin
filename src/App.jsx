@@ -5,7 +5,7 @@ import { ErrorPage } from './pages/Main/Error-Page';
 import { ForgetPassword } from './pages/Auth/ForgetPassword';
 import { ResetPassword } from './pages/Auth/ResetPassword';
 import { SidePanel } from './pages/Main/SidePanel';
-import { Dashboard } from './pages/Main/Dashboard';
+
 import { Users } from './pages/Main/Users';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,6 +21,7 @@ import Unauthorized from './pages/Main/Unauthorized';
 import Order from './pages/Main/Order/Order';
 import Customer from './pages/Main/Customer/Customer';
 import BinanceOrders from './pages/Main/BinanceOrders/BinanceOrders';
+import Dashboard from './pages/Main/Dashboard';
 
 function App() {
   const router = createBrowserRouter([
