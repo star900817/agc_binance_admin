@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "../../css/dashboard.css";
-import { Button, Modal, Space, Table, Tag } from "antd";
+import { Button, Dropdown, Modal, Select, Space, Table, Tag } from "antd";
+import { DownOutlined } from "@ant-design/icons";
 import OrderDetails from "./Order/Modals/OrderDetails";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
 import { getDashboardData, getOrders } from "../../services/Order";
 import { getCustomerUser } from "../../services/Users";
 import { fetchAllBinanceGifts, getBitaqtyGifts } from "../../services/Product";
+import Loader from "../../util/Loader";
 
 const Dashboard = () => {
   const [orderDetails, setOrderDetails] = useState({
@@ -17,6 +30,9 @@ const Dashboard = () => {
   const [orderNumbers, setorderNumbers] = useState();
 
   const [lastOrdersData, setLastOrdersData] = useState();
+  const [chartData, setChartData] = useState();
+  const [selectedMonth, setSelectedMonth] = useState();
+  const [isLoading, setisLoading] = useState(true)
 
   const handleOpenDetailView = (data) => {
     setOrderDetails({
@@ -27,18 +43,120 @@ const Dashboard = () => {
 
   useEffect(() => {
     async function fetch() {
-      const { data: generalInfo, orders: lastOrders } =
-        await getDashboardData();
+      const {
+        data: generalInfo,
+        orders: lastOrders,
+        graph: graphData,
+      } = await getDashboardData();
 
       setorderNumbers(generalInfo.orders);
       setCustomerNumbers(generalInfo.customers);
       setProductNumbers(generalInfo.products);
       setSalesNumbers(generalInfo.sales);
       setLastOrdersData(lastOrders);
+      setChartData(graphData);
+      setisLoading(false)
     }
-
     fetch();
   }, []);
+
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      // title: {
+      //   display: true,
+      //   text: "Chart.js Line Chart",
+      // },
+    },
+  };
+
+  const months = {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  };
+  const handleChange = (value, label) => {
+    // console.log('clicked!!!')
+    const [month, year] = label.label.split(" ");
+       console.log('clicked!!!', month)
+     const formattedMonth = Object.keys(months).find(
+    (key) => months[key] === month
+    );
+    // console.log(formattedMonth + '-' + year, 'jhgdvuweduwedw')
+    setSelectedMonth(formattedMonth + '-' + year)
+  };
+
+  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+  // const labels = Object.keys(chartData["3-2024"]).map((key) => key);
+  // console.log(keysArray,'labels===');
+
+  // const data = Object.values(chartData["3-2024"]).map((value) => value);
+  // console.log(data, "/////", abc);
+  // let abc = [];
+  // let totalPrice
+  // const nested = data.map((item) =>
+  //   totalPrice = 0
+  //   item.forEach((item) => {
+  //     totalPrice += item.price;
+  //   })
+  //   abc.push(totalPrice)
+  // );
+
+  let chart;
+  let items;
+  if (chartData) {
+    items = Object.keys(chartData).map((key, index) => ({
+      label: months[key.split("-")[0]] + " " + key.split("-")[1],
+      value: String(index + 1),
+    }));
+    const labels = Object.keys(chartData["3-2024"]).map((key) => key);
+    const data = Object.values(chartData["3-2024"]).map((value) => value);
+    let dataPoints = [];
+    let totalPrice;
+    data.forEach((item) => {
+      totalPrice = 0;
+      item.forEach((i) => {
+        totalPrice += Number(i.grandTotal);
+      });
+      dataPoints.push(totalPrice);
+    });
+
+    chart = {
+      labels,
+      datasets: [
+        {
+          label: "Sales Data",
+          data: dataPoints,
+          borderColor: "#00B6DE",
+          backgroundColor: "#00B6DE",
+        },
+      ],
+    };
+  }
 
   const modalStyles = {
     width: "60% !important",
@@ -127,6 +245,7 @@ const Dashboard = () => {
   ];
 
   return (
+    isLoading? <Loader/> :
     <div>
       <div>
         <h4>Home</h4>
@@ -237,7 +356,24 @@ const Dashboard = () => {
       </div>
 
       <div className="chart-div">
-        <h4>Sales Details</h4>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          {" "}
+          <h4>Sales Details</h4>
+          {items && (
+            <Select
+              defaultValue={items[0]?.label}
+              // defaultValue='abc'
+              style={{
+                width: 120,
+              }}
+              onChange={handleChange}
+              options={items}
+            />
+          )}
+        </div>
+
+          <div className="inner-chart-div">  {chartData && <Line style={{width: '900px', height: '350px'}} options={options} data={chart} />}</div>
+      
       </div>
 
       <div className="latest-orders-div">

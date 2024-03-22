@@ -3,6 +3,7 @@ import { getOrders } from '../../../services/Order';
 import { Button, Input, Modal, Space, Table, Tag } from 'antd';
 import OrderDetails from './Modals/OrderDetails';
 import { searchData, sortByCreatedAtDescending } from '../../../util/helper';
+import Loader from '../../../util/Loader';
 
 const modalStyles = {
   width: '60% !important', // Default width for larger screens
@@ -14,7 +15,7 @@ const modalStyles = {
 const Order = () => {
   const [orders, setOrders] = useState([]);
   const [copyOrders, setCopyOrders] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true)
   const [orderDetails, setOrderDetails] = useState({
     isOpen: false,
     data: null,
@@ -42,9 +43,11 @@ const Order = () => {
       const { data: orderData } = await getOrders();
       setOrders(sortByCreatedAtDescending(orderData));
       setCopyOrders(sortByCreatedAtDescending(orderData));
+        setIsLoading(false)
     }
 
     fetch();
+  
   }, []);
 
   useEffect(() => {
@@ -122,6 +125,7 @@ const Order = () => {
   ];
 
   return (
+    isLoading? <Loader/> :
     <div>
       <div style={{ color: 'black' }}>
         <div

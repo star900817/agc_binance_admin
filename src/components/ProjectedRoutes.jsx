@@ -1,14 +1,14 @@
-import { Navigate, useLocation } from "react-router-dom"
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ children }) => {
-    let location = useLocation();
+    const localstorgeToken = localStorage.getItem("admin_token");
+    return (
+        <div>
 
-    if (!localStorage.getItem('admin_token')) {
-        return <Navigate to="/" state={{ from: location }} replace />
-    }
-    return children
-
+            {localstorgeToken ? children : <Navigate to="/" />}
+        </div>
+    )
 };
 
 export default ProtectedRoute;

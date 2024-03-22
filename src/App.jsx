@@ -5,7 +5,6 @@ import { ErrorPage } from './pages/Main/Error-Page';
 import { ForgetPassword } from './pages/Auth/ForgetPassword';
 import { ResetPassword } from './pages/Auth/ResetPassword';
 import { SidePanel } from './pages/Main/SidePanel';
-
 import { Users } from './pages/Main/Users';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,8 +21,10 @@ import Order from './pages/Main/Order/Order';
 import Customer from './pages/Main/Customer/Customer';
 import BinanceOrders from './pages/Main/BinanceOrders/BinanceOrders';
 import Dashboard from './pages/Main/Dashboard';
+import { useEffect, useState } from 'react';
 
-function App() {
+function App() {  
+
   const router = createBrowserRouter([
     {
       path: '/',
@@ -49,51 +50,51 @@ function App() {
       children: [
         {
           path: 'dashboard',
-          element: <Dashboard />,
+          element:<ProtectedRoute><Dashboard /></ProtectedRoute> ,
         },
         {
           path: 'users',
-          element: <Users />,
+          element: <ProtectedRoute><Users /></ProtectedRoute>,
         },
         {
           path: 'collections',
-          element: <Collections />,
+          element: <ProtectedRoute><Collections /></ProtectedRoute>,
         },
         {
           path: 'categories',
-          element: <Categories />,
+          element: <ProtectedRoute><Categories /></ProtectedRoute>,
         },
         {
           path: 'giftcards',
-          element: <CombinedGiftList />,
+          element:<ProtectedRoute><CombinedGiftList /></ProtectedRoute> ,
         },
         {
           path: 'selectedgiftcards',
-          element: <SelectedGiftCards />,
+          element: <ProtectedRoute><SelectedGiftCards /></ProtectedRoute>,
         },
         {
           path: 'bitaqatygiftcard',
-          element: <BitaqatyGiftCards />,
+          element:<ProtectedRoute> <BitaqatyGiftCards /></ProtectedRoute>,
         },
         {
           path: 'binance',
-          element: <Binance />,
+          element: <ProtectedRoute><Binance /></ProtectedRoute>,
         },
         {
           path: 'binanceOrders',
-          element: <BinanceOrders />,
+          element: <ProtectedRoute><BinanceOrders /></ProtectedRoute>,
         },
         {
           path: 'cmsManagement',
-          element: <Cms />,
+          element: <ProtectedRoute><Cms /></ProtectedRoute>,
         },
         {
           path: 'orders',
-          element: <Order />,
+          element:<ProtectedRoute><Order /></ProtectedRoute> ,
         },
         {
           path: 'customers',
-          element: <Customer />,
+          element: <ProtectedRoute><Customer /></ProtectedRoute>,
         },
         {
           path: 'unauthorized',
@@ -106,6 +107,7 @@ function App() {
   return (
     <>
       <ToastContainer />
+      
       <RouterProvider router={router} />
     </>
   );

@@ -1,0 +1,23 @@
+.loading {
+    text-align: center;
+}
+
+.svgbox {
+    --green: #00B6DE;
+    stroke: var(--green);
+    stroke-width: 3;
+    fill: none;
+    stroke-dasharray: 50, 14;
+    stroke-dashoffset: 192;
+    animation: dash_682 2s linear infinite;
+}
+
+@keyframes dash_682 {
+    72.5% {
+        opacity: 1;
+    }
+
+    to {
+        stroke-dashoffset: 1;
+    }
+}

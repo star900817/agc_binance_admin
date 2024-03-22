@@ -16,6 +16,7 @@ import {
 } from '../../services/Collections';
 import { toast } from 'react-toastify';
 import { generateRandomString } from '../../util/generateId';
+import Loader from '../../util/Loader';
 
 const formItemLayout = {
   labelCol: {
@@ -53,7 +54,7 @@ const Collections = () => {
   const [form] = Form.useForm();
   const [getCollectionsData, setgetCollectionsData] = useState([]);
   const [edit, setEdit] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true)
   const [editCollectionData, setEditCollectionData] = useState(null);
   let initialCollectionState = {
     uuid: generateRandomString(5),
@@ -125,6 +126,7 @@ const Collections = () => {
   const getCollectionsDetails = async () => {
     let { success, data } = await getCollections();
     setgetCollectionsData(data);
+    setIsLoading(false)
   };
 
   const upCategoryOrder = async (index) => {
@@ -233,6 +235,7 @@ const Collections = () => {
   ];
 
   return (
+    isLoading? <Loader/> :
     <>
       <Button
         type="primary"

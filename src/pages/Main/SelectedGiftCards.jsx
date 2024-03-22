@@ -32,6 +32,7 @@ import AddBinanceModal from './Binance/Modals/AddBinanceModal';
 import AddBitaqtyModal from './CombinedGiftList/Modals/AddProductModal';
 import UpdateBinanceModal from './Binance/Modals/UpdateBinanceModal';
 import GridView from './GridView';
+import Loader from '../../util/Loader';
 
 const SelectedGiftCards = () => {
   const [gifts, setGifts] = useState(null);
@@ -50,6 +51,7 @@ const SelectedGiftCards = () => {
 
   const [mergedCopy, setMergedCopy] = useState(null);
   const [layout, changeLayout] = useState('list')
+  const [isLoading, setIsLoading] = useState(true)
   const searchInput = useRef(null);
   const [filteredGift, setFilteredGift] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -95,6 +97,7 @@ const SelectedGiftCards = () => {
       const mergedData = [...gifts, ...allBinance];
       setMergedCopy(mergedData);
       setMergedDataSource(mergedData);
+      setIsLoading(false)
     }
   }, [gifts, allBinance]);
 
@@ -323,6 +326,7 @@ const totalPages = Math.ceil(mergedDataSource?.length / itemsPerPage);
   ];
 
   return (
+    isLoading? <Loader/>:
     <>
       <div style={{
             display: 'flex',
