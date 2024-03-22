@@ -21,7 +21,6 @@ import Order from './pages/Main/Order/Order';
 import Customer from './pages/Main/Customer/Customer';
 import BinanceOrders from './pages/Main/BinanceOrders/BinanceOrders';
 import Dashboard from './pages/Main/Dashboard';
-import { useEffect, useState } from 'react';
 
 function App() {  
 

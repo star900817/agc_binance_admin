@@ -59,12 +59,8 @@ const SelectedGiftCards = () => {
   const [openAddBitaqtyModal, setOpenAddBitaqtyModal] = useState(false);
 
   const [mergedCopy, setMergedCopy] = useState(null);
-<<<<<<< HEAD
   const [layout, changeLayout] = useState('list')
   const [isLoading, setIsLoading] = useState(true)
-=======
-  const [layout, changeLayout] = useState('list');
->>>>>>> 13670b4b2589a60d22c94f3d53d7624349c5ab92
   const searchInput = useRef(null);
   const [filteredGift, setFilteredGift] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');

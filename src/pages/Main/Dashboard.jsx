@@ -101,7 +101,6 @@ const Dashboard = () => {
   const handleChange = (value, label) => {
     // console.log('clicked!!!')
     const [month, year] = label.label.split(" ");
-       console.log('clicked!!!', month)
      const formattedMonth = Object.keys(months).find(
     (key) => months[key] === month
     );

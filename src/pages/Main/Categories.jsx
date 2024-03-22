@@ -14,16 +14,10 @@ import {
   swapCategory,
   deleteCategory,
   updateCategoryDetail,
-<<<<<<< HEAD
 } from "../../services/categories";
 import { toast } from "react-toastify";
 import { generateRandomString } from "../../util/generateId";
 import Loader from "../../util/Loader";
-=======
-} from '../../services/categories';
-import { toast } from 'react-toastify';
-import { generateRandomString } from '../../util/generateId';
->>>>>>> 13670b4b2589a60d22c94f3d53d7624349c5ab92
 
 const formItemLayout = {
   labelCol: {
