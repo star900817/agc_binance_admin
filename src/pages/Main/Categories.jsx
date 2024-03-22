@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Button, Table, Modal, Input, Form } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Button, Table, Modal, Input, Form } from 'antd';
 import {
   MenuOutlined,
   DeleteOutlined,
@@ -7,17 +7,23 @@ import {
   UpOutlined,
   DownOutlined,
   CloseCircleOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons';
 import {
   createCategory,
   getCategories,
   swapCategory,
   deleteCategory,
   updateCategoryDetail,
+<<<<<<< HEAD
 } from "../../services/categories";
 import { toast } from "react-toastify";
 import { generateRandomString } from "../../util/generateId";
 import Loader from "../../util/Loader";
+=======
+} from '../../services/categories';
+import { toast } from 'react-toastify';
+import { generateRandomString } from '../../util/generateId';
+>>>>>>> 13670b4b2589a60d22c94f3d53d7624349c5ab92
 
 const formItemLayout = {
   labelCol: {
@@ -67,7 +73,7 @@ const Categories = () => {
   const [editCategoryData, setEditCategoryData] = useState(null);
   let initialCategoryState = {
     uuid: generateRandomString(5),
-    title: "",
+    title: '',
     image: null,
     subcategory: [],
   };
@@ -78,7 +84,7 @@ const Categories = () => {
   const [subCategory, setSubCategory] = useState([
     {
       id: generateRandomString(5),
-      subCategoryName: "",
+      subCategoryName: '',
     },
   ]);
 
@@ -91,32 +97,30 @@ const Categories = () => {
   }, [subCategory]);
 
   const handleSubCategoryList = (id, title, image, index) => {
-    
     const updatedParaInput = subCategory.map((item) => {
       if (item.id === id) {
         console.log(image, title);
 
         if (title !== undefined) return { ...item, subCategoryName: title };
         if (image !== undefined && index !== undefined) {
-          
           setImageChangeIndex((prev) => [...prev, index]);
           return { ...item, subCategoryImage: image };
         } else return { ...item };
       }
       return item;
     });
-    console.log("updatedParaInput", updatedParaInput);
+    console.log('updatedParaInput', updatedParaInput);
     setSubCategory(updatedParaInput);
   };
 
-  const showModal = () => {    
-    setModalKey(prevKey => prevKey + 1);
+  const showModal = () => {
+    setModalKey((prevKey) => prevKey + 1);
     setIsModalOpen(true);
     setCategory(initialCategoryState);
     setSubCategory([
       {
         id: generateRandomString(5),
-        subCategoryName: "",
+        subCategoryName: '',
       },
     ]);
   };
@@ -129,18 +133,18 @@ const Categories = () => {
     setSubCategory([
       {
         id: generateRandomString(5),
-        subCategoryName: "",
+        subCategoryName: '',
       },
     ]);
   };
 
   const onFinish = (values) => {
-    console.log("Received values of form:", values);
+    console.log('Received values of form:', values);
   };
 
   const handleChange = (e) => {
-    if (e.target.name == "title") {
-      if (e.target.value == "") {
+    if (e.target.name == 'title') {
+      if (e.target.value == '') {
         setError(true);
       } else {
         setError(false);
@@ -150,7 +154,7 @@ const Categories = () => {
   };
 
   const handleImageChange = (e) => {
-    console.log("e", e);
+    console.log('e', e);
     setCategory((prev) => ({ ...prev, image: e.target.files[0] }));
   };
 
@@ -159,24 +163,23 @@ const Categories = () => {
   };
 
   const handleSubmit = async () => {
-
-    if (category.title == "") {
+    if (category.title == '') {
       setError(true);
     } else {
       const fb = new FormData();
-      fb.append("name", category.title);
-      fb.append("image", category.image);
-      fb.append("uid", new Date().getTime());
+      fb.append('name', category.title);
+      fb.append('image', category.image);
+      fb.append('uid', new Date().getTime());
       // fb.append("subCategories[]", JSON.stringify(category.subcategory));
       category.subcategory.forEach((item, index) => {
-        if (item.subCategoryName != "") {
+        if (item.subCategoryName != '') {
           let detailObj = {
             id: item.id,
             subCategoryName: item.subCategoryName,
           };
-          fb.append("subCategories", JSON.stringify(detailObj));
-          fb.append("subCategoryImage", item.subCategoryImage);
-        }        
+          fb.append('subCategories', JSON.stringify(detailObj));
+          fb.append('subCategoryImage', item.subCategoryImage);
+        }
       });
 
       let { success, message, data } = await createCategory(fb);
@@ -187,7 +190,7 @@ const Categories = () => {
         setSubCategory([
           {
             id: generateRandomString(5),
-            subCategoryName: "",
+            subCategoryName: '',
           },
         ]);
         setIsModalOpen(false);
@@ -212,7 +215,7 @@ const Categories = () => {
     setIsLoading(false)
   };
 
-  const upCategoryOrder =async (index) => {
+  const upCategoryOrder = async (index) => {
     if (index > 0) {
       console.log(index);
       const firstID = getCategoriesData[index]._id;
@@ -223,9 +226,9 @@ const Categories = () => {
         getCategoriesDetails();
       }
     }
-  }
+  };
 
-  const downCategoryOrder =async (index) => {
+  const downCategoryOrder = async (index) => {
     if (index < getCategoriesData.length - 1) {
       console.log(index);
       const firstID = getCategoriesData[index]._id;
@@ -236,7 +239,7 @@ const Categories = () => {
         getCategoriesDetails();
       }
     }
-  }
+  };
 
   const deleteCategoryData = async (id) => {
     const { success, message } = await deleteCategory(id);
@@ -248,7 +251,7 @@ const Categories = () => {
 
   const editCtaegoryData = async (id) => {
     const findData = getCategoriesData.find((item) => item._id == id);
-    console.log("findData", findData);
+    console.log('findData', findData);
     setEdit(true);
     setEditCategoryData(findData);
     setHideImage(false);
@@ -261,13 +264,13 @@ const Categories = () => {
         categoryCoverImage: findData?.categoryCoverImage,
       }),
     });
-    if(findData?.subCategories?.length > 0) {
+    if (findData?.subCategories?.length > 0) {
       setSubCategory(findData?.subCategories);
     } else {
       setSubCategory([
         {
           id: generateRandomString(5),
-          subCategoryName: "",
+          subCategoryName: '',
         },
       ]);
     }
@@ -278,16 +281,16 @@ const Categories = () => {
   };
 
   const updateCategories = async () => {
-    if (category.title == "") {
+    if (category.title == '') {
       setError(true);
     } else {
       const fb = new FormData();
-      fb.append("categoryId", category.uuid);
-      fb.append("name", category.title);
+      fb.append('categoryId', category.uuid);
+      fb.append('name', category.title);
       // fb.append("subCategories", JSON.stringify(category.subcategory));
-      fb.append("image", category.image);
-      fb.append("categoryCoverImage", category.categoryCoverImage);
-      
+      fb.append('image', category.image);
+      fb.append('categoryCoverImage', category.categoryCoverImage);
+
       let indedArray = [];
       console.log(category.subcategory);
       category.subcategory.forEach((obj, index) => {
@@ -296,19 +299,19 @@ const Categories = () => {
             id: obj.id,
             subCategoryName: obj.subCategoryName,
           };
-          fb.append("imageDetails", JSON.stringify(detailObj));
-          fb.append("subCategoryImage", obj.subCategoryImage);
+          fb.append('imageDetails', JSON.stringify(detailObj));
+          fb.append('subCategoryImage', obj.subCategoryImage);
           indedArray.push(index);
         } else {
           let detailObj = {
             id: obj.id,
             subCategoryName: obj.subCategoryName,
-            subCategoryImage: obj.subCategoryImage
+            subCategoryImage: obj.subCategoryImage,
           };
-          fb.append("imageDetails", JSON.stringify(detailObj));
+          fb.append('imageDetails', JSON.stringify(detailObj));
         }
       });
-      fb.append("imageChangeIndex", JSON.stringify(indedArray));
+      fb.append('imageChangeIndex', JSON.stringify(indedArray));
 
       let { success, message } = await updateCategoryDetail(fb);
       if (success == 200) {
@@ -320,7 +323,7 @@ const Categories = () => {
         setSubCategory([
           {
             id: generateRandomString(5),
-            subCategoryName: "",
+            subCategoryName: '',
           },
         ]);
       }
@@ -336,27 +339,28 @@ const Categories = () => {
     setCategory((prev) => ({ ...prev, categoryCoverImage: e.target.files[0] }));
   };
 
-  const columns = [    
+  const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
       render: (value, record, index) => {
-
         return (
-          <>            
-            <UpOutlined 
-              style={{ margin: "0 15px 0 0", cursor: "pointer" }}
-              onClick={() => upCategoryOrder(index)} />
+          <>
+            <UpOutlined
+              style={{ margin: '0 15px 0 0', cursor: 'pointer' }}
+              onClick={() => upCategoryOrder(index)}
+            />
 
-            <DownOutlined 
-              style={{ margin: "0 15px 0 0", cursor: "pointer" }}
-              onClick={() => downCategoryOrder(index)} />
+            <DownOutlined
+              style={{ margin: '0 15px 0 0', cursor: 'pointer' }}
+              onClick={() => downCategoryOrder(index)}
+            />
 
             <DeleteOutlined
               style={{ margin: "0 15px 0 0", cursor: "pointer", color: '#F93C65' }}
@@ -364,6 +368,7 @@ const Categories = () => {
             />
             <EditOutlined
               style={{ margin: "0 15px 0 0", cursor: "pointer", color: '#00B6DE' }}
+
               onClick={() => editCtaegoryData(record._id)}
             />
           </>
@@ -402,146 +407,155 @@ const Categories = () => {
             rules={[
               {
                 required: true,
-                message: "Please input your Password!",
+                message: 'Please input your Password!',
               },
             ]}
           >
-            <div style={{ margin: "0 0 50 0" }}>
-              <label>Name:</label>
-              <Input
-                type="text"
-                placeholder="Basic usage"
-                name="title"
-                onChange={handleChange}
-                value={category?.title}
-                className="form-control"
-              />
-              {error && (
-                <span className="error">Category field is required !</span>
-              )}
-            </div>
-
-            <p style={{ marginBottom: "3px" }}>Change Image:</p>
-            <input type="file" onChange={handleditImageChange} name="image" />
-
-            <div style={{ margin: "0 0 20 0" }}>
-              {hideImage == false ? (
-                <>
-                  <div className="" style={{ marginTop: "15px" }}>
-                    <label style={{ display: "block" }}>Uploaded Image:</label>
-                    <img
-                      src={`${imageUrl}/${category.image}`}
-                      className="categoryImg"
-                    />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <img src="" />
-                </>
-              )}
-            </div>
-
-            <h5>Sub-Categories</h5>
-            <Form
-              name="dynamic_form_item"
-              {...formItemLayoutWithOutLabel}
-              onFinish={onFinish}
-              style={{
-                maxWidth: 600,
-              }}
-            >
-              <div className="col-span-6">
-                <div>
-                  {subCategory?.map((item, index) => (
-                    <div
-                      key={item.id}
-                      className="field"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "baseline",
-                        marginTop: "20px",
-                      }}
-                    >
-                      <button
-                        className="subCatBtn"
-                        style={{ width: "5%" }}
-                        onClick={() =>
-                          setSubCategory([
-                            ...subCategory,
-                            {
-                              id: generateRandomString(5),
-                              subCategoryName: "",
-                            },
-                          ])
-                        }
-                      >
-                        <span
-                          style={{ color: "black" }}
-                          className="text-[30px] ml-[20px] cursor-pointer addsubCategories"
-                        >
-                          +
-                        </span>
-                      </button>
-
-                      <div style={{ display: "block", width: "90%" }}>
-                        <Input
-                          name={"subCategoryName"}
-                          style={{ marginBottom: "10px" }}
-                          onChange={(e) =>
-                            handleSubCategoryList(item?.id, e.target.value)
-                          }
-                          value={item?.subCategoryName || ""}
-                        />
-
-                       { item?.subCategoryImage? (typeof item?.subCategoryImage === "object" ? (
-                          <img
-                            src={URL.createObjectURL(item?.subCategoryImage)}
-                            height={200}
-                            width={200}
-                          />
-                        ) : (
-                          <img
-                            src={`${imageUrl}/${item?.subCategoryImage}`}
-                            height={200}
-                            width={200}
-                          />
-                        )) : ''}
-                        <input
-                          type="file"
-                          id={item.id}
-                          onChange={(e) =>
-                            handleSubCategoryList(
-                              item.id,
-                              undefined,
-                              e.target.files[0],
-                              index
-                            )
-                          }
-                        ></input>
-                      </div>
-                      <div
-                        // className="removeSubCategories"
-                        style={{
-                          width: "5%",
-                          paddingLeft: "12px",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setSubCategory(
-                            removeElementFromArray(subCategory, item.id)
-                          );
-                        }}
-                      >
-                        <CloseCircleOutlined />
-                      </div>
-                    </div>
-                  ))}
-
-                </div>
+            <div style={{ padding: '10px' }}>
+              <div style={{ margin: '0 0 50 0' }}>
+                <label>Name:</label>
+                <Input
+                  type="text"
+                  placeholder="Basic usage"
+                  name="title"
+                  onChange={handleChange}
+                  value={category?.title}
+                  className="form-control"
+                />
+                {error && (
+                  <span className="error">Category field is required !</span>
+                )}
               </div>
-            </Form>
+
+              <p style={{ marginBottom: '3px' }}>Change Image:</p>
+              <input type="file" onChange={handleditImageChange} name="image" />
+
+              <div style={{ margin: '0 0 20 0' }}>
+                {hideImage == false ? (
+                  <>
+                    <div className="" style={{ marginTop: '15px' }}>
+                      <label style={{ display: 'block' }}>
+                        Uploaded Image:
+                      </label>
+                      <img
+                        src={`${imageUrl}/${category.image}`}
+                        className="categoryImg"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <img src="" />
+                  </>
+                )}
+              </div>
+            </div>
+            <div style={{ width: '50%' }}>
+              <h5>Sub-Categories</h5>
+              <Form
+                name="dynamic_form_item"
+                {...formItemLayoutWithOutLabel}
+                onFinish={onFinish}
+                style={{
+                  maxWidth: 600,
+                }}
+              >
+                <div className="col-span-6">
+                  <div>
+                    {subCategory?.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="field"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'baseline',
+                          marginTop: '20px',
+                        }}
+                      >
+                        <button
+                          className="subCatBtn"
+                          style={{ width: '5%' }}
+                          onClick={() =>
+                            setSubCategory([
+                              ...subCategory,
+                              {
+                                id: generateRandomString(5),
+                                subCategoryName: '',
+                              },
+                            ])
+                          }
+                        >
+                          <span
+                            style={{ color: 'black' }}
+                            className="text-[30px] ml-[20px] cursor-pointer addsubCategories"
+                          >
+                            +
+                          </span>
+                        </button>
+
+                        <div style={{ display: 'block', width: '80%' }}>
+                          <Input
+                            name={'subCategoryName'}
+                            style={{ marginBottom: '10px' }}
+                            onChange={(e) =>
+                              handleSubCategoryList(item?.id, e.target.value)
+                            }
+                            value={item?.subCategoryName || ''}
+                          />
+
+                          {item?.subCategoryImage ? (
+                            typeof item?.subCategoryImage === 'object' ? (
+                              <img
+                                src={URL.createObjectURL(
+                                  item?.subCategoryImage
+                                )}
+                                height={200}
+                                width={200}
+                              />
+                            ) : (
+                              <img
+                                src={`${imageUrl}/${item?.subCategoryImage}`}
+                                height={200}
+                                width={200}
+                              />
+                            )
+                          ) : (
+                            ''
+                          )}
+                          <input
+                            type="file"
+                            id={item.id}
+                            onChange={(e) =>
+                              handleSubCategoryList(
+                                item.id,
+                                undefined,
+                                e.target.files[0],
+                                index
+                              )
+                            }
+                          ></input>
+                        </div>
+                        <div
+                          // className="removeSubCategories"
+                          style={{
+                            width: '5%',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => {
+                            setSubCategory(
+                              removeElementFromArray(subCategory, item.id)
+                            );
+                          }}
+                        >
+                          <CloseCircleOutlined />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </Form>
+            </div>
           </Form.Item>
         </Modal>
       ) : (
@@ -552,7 +566,7 @@ const Categories = () => {
           onOk={handleSubmit}
           onCancel={handleCancel}
         >
-          <div style={{ margin: "0 0 50 0" }}>
+          <div style={{ margin: '0 0 50 0' }}>
             <Input
               type="text"
               placeholder="Add category name"
@@ -565,7 +579,7 @@ const Categories = () => {
               <span className="error">Category field is required !</span>
             )}
           </div>
-          <div style={{ marginTop: "20px" }}>
+          <div style={{ marginTop: '20px' }}>
             <>
               <label>Upload Image:</label>
               <Input
@@ -603,21 +617,21 @@ const Categories = () => {
                   <div
                     key={item.id}
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: "20px",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: '20px',
                     }}
                   >
                     <Button
                       className="mb-[10px]"
-                      style={{marginRight: '5px'}}
+                      style={{ marginRight: '5px' }}
                       onClick={() =>
                         setSubCategory([
                           ...subCategory,
                           {
                             id: generateRandomString(5),
-                            subCategoryName: "",
+                            subCategoryName: '',
                           },
                         ])
                       }
@@ -629,7 +643,7 @@ const Categories = () => {
                             ...subCategory,
                             {
                               id: generateRandomString(5),
-                              subCategoryName: "",
+                              subCategoryName: '',
                             },
                           ])
                         }
@@ -638,27 +652,29 @@ const Categories = () => {
                       </span>
                     </Button>
                     <Input
-                      name={"subCategoryName"}
-                      style={{marginRight: '5px'}}
+                      name={'subCategoryName'}
+                      style={{ marginRight: '5px' }}
                       onChange={(e) =>
                         handleSubCategoryList(item?.id, e.target.value)
                       }
-                      value={item?.subCategoryName || ""}
+                      value={item?.subCategoryName || ''}
                     />
                     <Input
-                          type="file"
-                          style={{marginRight: '5px'}}
-                          placeholder="Basic usage"
-                          name="subCategoryImage"
-                          onChange={(e) => handleSubCategoryList(
-                            item.id,
-                            undefined,
-                            e.target.files[0],
-                            index
-                          )}
-                        />
+                      type="file"
+                      style={{ marginRight: '5px' }}
+                      placeholder="Basic usage"
+                      name="subCategoryImage"
+                      onChange={(e) =>
+                        handleSubCategoryList(
+                          item.id,
+                          undefined,
+                          e.target.files[0],
+                          index
+                        )
+                      }
+                    />
                     <div
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: 'pointer' }}
                       onClick={() => {
                         setSubCategory(
                           removeElementFromArray(subCategory, item.id)
@@ -666,7 +682,7 @@ const Categories = () => {
                       }}
                     >
                       x
-                    </div>                    
+                    </div>
                   </div>
                 ))}
               </div>
@@ -675,7 +691,11 @@ const Categories = () => {
         </Modal>
       )}
 
-      <Table dataSource={getCategoriesData} columns={columns} rowKey={(record) => record._id} />
+      <Table
+        dataSource={getCategoriesData}
+        columns={columns}
+        rowKey={(record) => record._id}
+      />
     </>
   );
 };

@@ -60,7 +60,7 @@ const AddProductModal = ({ setProductToAdd }) => {
     setAddProduct((prev) => ({
       ...prev,
       baseToken: addProduct?.baseToken,
-      baseToken: 'USDT',
+      // baseToken: 'USDT',
     }));
   }, [addProduct?.baseToken]);
 
@@ -151,22 +151,22 @@ const AddProductModal = ({ setProductToAdd }) => {
       </div>
 
       <div style={{ marginTop: '10px' }}>
-        <label>Cost Price</label>
+        <label>Cost Price {addProduct?.productDetails?.currency}</label>
         <Input
           type="input"
           placeholder="Cost Price"
-          name="priceInSAR"
-          value={addProduct?.priceInSAR}
+          name="price"
+          value={addProduct?.price}
           onChange={(e) => handleStateChange(e, setAddProduct)}
         />
       </div>
       <div style={{ marginTop: '10px' }}>
-        <label>Selling Price {addProduct?.productDetails?.currency}</label>
+        <label>Selling Price</label>
         <Input
           type="input"
           placeholder="Selling Price"
-          name="price"
-          value={addProduct?.price}
+          name="priceInSAR"
+          value={addProduct?.priceInSAR}
           onChange={(e) => handleStateChange(e, setAddProduct)}
         />
       </div>
