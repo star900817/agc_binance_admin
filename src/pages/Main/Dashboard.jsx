@@ -71,18 +71,18 @@ const Dashboard = () => {
     Legend
   );
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      // title: {
-      //   display: true,
-      //   text: "Chart.js Line Chart",
-      // },
-    },
-  };
+  // const options = {
+  //   responsive: true,
+  //   plugins: {
+  //     legend: {
+  //       position: "top",
+  //     },
+  //     // title: {
+  //     //   display: true,
+  //     //   text: "Chart.js Line Chart",
+  //     // },
+  //   },
+  // };
 
   const months = {
     1: "January",
@@ -124,38 +124,56 @@ const Dashboard = () => {
   //   })
   //   abc.push(totalPrice)
   // );
-
+  const tempData = [
+    {
+      '3-2024': {
+    }
+    },
+    {
+      '4-2024': {
+    }
+    }
+]
+  // console.log(chartData,'dataaaaaaaaaaaaaa')
   let chart;
   let items;
-  if (chartData) {
-    items = Object.keys(chartData).map((key, index) => ({
-      label: months[key.split("-")[0]] + " " + key.split("-")[1],
-      value: String(index + 1),
-    }));
-    const labels = Object.keys(chartData["3-2024"]).map((key) => key);
-    const data = Object.values(chartData["3-2024"]).map((value) => value);
-    let dataPoints = [];
-    let totalPrice;
-    data.forEach((item) => {
-      totalPrice = 0;
-      item.forEach((i) => {
-        totalPrice += Number(i.grandTotal);
-      });
-      dataPoints.push(totalPrice);
-    });
+  // if (chartData) {
+  //   // items = Object.keys(chartData).map((key, index) => ({
+  //   //   label: months[key.split("-")[0]] + " " + key.split("-")[1],
+  //   //   value: String(index + 1),
+  //   // }));
 
-    chart = {
-      labels,
-      datasets: [
-        {
-          label: "Sales Data",
-          data: dataPoints,
-          borderColor: "#00B6DE",
-          backgroundColor: "#00B6DE",
-        },
-      ],
-    };
-  }
+  //   // tempData.map((data, index) => {
+  //   //   console.log(Object.keys(data), 'key/////')
+  //   //   // items.push(Object.keys(data)[0])
+  //   // });
+  //   items = chartData.map(item => Object.keys(item)[0]);
+  //   console.log(items,'itemssssssssssssssssss')
+  //   const labels = Object.keys(chartData[0]["3-2024"]).map((key) => key);
+  //   // const data = Object.values(chartData["3-2024"]).map((value) => value);
+  //   let dataPoints = [];
+  //   let totalPrice;
+  //   console.log(labels,'///======')
+  //   // data.forEach((item) => {
+  //   //   totalPrice = 0;
+  //   //   item.forEach((i) => {
+  //   //     totalPrice += Number(i.grandTotal);
+  //   //   });
+  //   //   dataPoints.push(totalPrice);
+  //   // });
+
+  //   // chart = {
+  //   //   labels,
+  //   //   datasets: [
+  //   //     {
+  //   //       label: "Sales Data",
+  //   //       data: dataPoints,
+  //   //       borderColor: "#00B6DE",
+  //   //       backgroundColor: "#00B6DE",
+  //   //     },
+  //   //   ],
+  //   // };
+  // }
 
   const modalStyles = {
     width: "60% !important",
@@ -371,7 +389,7 @@ const Dashboard = () => {
           )}
         </div>
 
-          <div className="inner-chart-div">  {chartData && <Line style={{width: '900px', height: '350px'}} options={options} data={chart} />}</div>
+          {/* <div className="inner-chart-div">  {chartData && <Line style={{width: '900px', height: '350px'}} options={options} data={chart} />}</div> */}
       
       </div>
 
