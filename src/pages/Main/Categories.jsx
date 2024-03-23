@@ -14,9 +14,10 @@ import {
   swapCategory,
   deleteCategory,
   updateCategoryDetail,
-} from '../../services/categories';
-import { toast } from 'react-toastify';
-import { generateRandomString } from '../../util/generateId';
+} from "../../services/categories";
+import { toast } from "react-toastify";
+import { generateRandomString } from "../../util/generateId";
+import Loader from "../../util/Loader";
 
 const formItemLayout = {
   labelCol: {
@@ -53,6 +54,7 @@ const Categories = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
   const [getCategoriesData, setgetCategoriesData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true)
   const [edit, setEdit] = useState(false);
   const [imageChangeIndex, setImageChangeIndex] = useState([]);
 
@@ -204,6 +206,7 @@ const Categories = () => {
   const getCategoriesDetails = async () => {
     let { success, data } = await getCategories();
     setgetCategoriesData(data);
+    setIsLoading(false)
   };
 
   const upCategoryOrder = async (index) => {
@@ -369,6 +372,7 @@ const Categories = () => {
   ];
 
   return (
+    isLoading? <Loader/>: 
     <>
       <Button
         type="primary"

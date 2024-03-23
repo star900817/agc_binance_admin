@@ -4,9 +4,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../services/Auth';
 import { toast } from 'react-toastify';
 import '../../css/login.css';
+import { useEffect } from 'react';
 
 export const Login = () => {
   let navigate = useNavigate();
+
+  useEffect(() => {
+        const token = localStorage.getItem("admin_token");
+        if (token) {
+            navigate("/main/dashboard")
+        } else {
+            navigate("/")
+        }
+  },[])
 
   const onFinish = async (values) => {
     let { success, message } = await login(values.email, values.password);

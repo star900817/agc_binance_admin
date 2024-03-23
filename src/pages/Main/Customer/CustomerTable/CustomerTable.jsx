@@ -3,11 +3,12 @@ import { getCustomerUser } from "../../../../services/Users";
 import { Button, Space, Input, Table } from "antd";
 import { searchData } from "../../../../util/helper";
 import { SearchOutlined } from '@ant-design/icons';
+import Loader from "../../../../util/Loader";
 
 const CustomerTable = () => {
   const [customers, setCustomers] = useState([]);
   const [copyCustomers, setCopyCustomers] = useState([]);
-
+   const [isLoading, setIsLoading] = useState(true)
   const [sortParameters, setSortParameters] = useState({
     email: "",
     firstName: "",
@@ -132,12 +133,15 @@ const CustomerTable = () => {
       const { data: customerData } = await getCustomerUser();
       setCustomers(customerData);
       setCopyCustomers(customerData);
+        setIsLoading(false)
     }
 
     fetch();
+  
   }, []);
 
   return (
+isLoading? <Loader/> :
     <div>      
       <Table
         columns={CustomerTableColumns}

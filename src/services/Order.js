@@ -52,11 +52,12 @@ export const getDashboardData = async () => {
         },
       })
     ).data;
-    console.log(result, "dashboard====//////////////////");
+
     return {
       message: result.message,
       data: result.data,
       orders: result.lastOrders,
+      graph: result.salesData,
     };
   } catch (error) {
     console.log("error", error);

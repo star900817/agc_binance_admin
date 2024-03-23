@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import FormItem from "antd/es/form/FormItem";
 import { country, userRoleBase, userRoleSelect } from "../../util/constant";
 import { handleStateChange, searchData } from "../../util/helper"
+import Loader from "../../util/Loader";
 
 export const Users = () => {
 
@@ -27,6 +28,7 @@ export const Users = () => {
 
   const [userType, setUserType] = useState("");
   const [userAccess, setUserAccess] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
 
   const [mobileNo, setMobileNo] = useState({
     prefix: "",
@@ -61,9 +63,11 @@ export const Users = () => {
       } else {
         toast.error(message);
       }
+         setIsLoading(false)
     }
 
     getUserApiCall();
+ 
   }, [isModalOpen, isUpdateModalOpen]);
 
   // const numberPrefixSelector = (
@@ -293,6 +297,7 @@ export const Users = () => {
   ];
 
   return (
+    isLoading ? <Loader /> :
     <>
       <Modal
         title="Create Users"
