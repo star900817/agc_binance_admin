@@ -59,8 +59,8 @@ const AddProductModal = ({ setProductToAdd }) => {
   useEffect(() => {
     setAddProduct((prev) => ({
       ...prev,
-      baseToken: addProduct?.baseToken,
-      // baseToken: 'USDT',
+      // baseToken: addProduct?.baseToken,
+      baseToken: 'USDT',
     }));
   }, [addProduct?.baseToken]);
 
