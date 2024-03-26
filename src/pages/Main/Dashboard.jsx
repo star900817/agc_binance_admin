@@ -32,7 +32,9 @@ const Dashboard = () => {
   const [lastOrdersData, setLastOrdersData] = useState();
   const [chartData, setChartData] = useState();
   const [selectedMonth, setSelectedMonth] = useState();
-  const [isLoading, setisLoading] = useState(true)
+  const [isLoading, setisLoading] = useState(true);
+  const [items, setItems] = useState();
+  let labels
 
   const handleOpenDetailView = (data) => {
     setOrderDetails({
@@ -40,49 +42,6 @@ const Dashboard = () => {
       data: data,
     });
   };
-
-  useEffect(() => {
-    async function fetch() {
-      const {
-        data: generalInfo,
-        orders: lastOrders,
-        graph: graphData,
-      } = await getDashboardData();
-
-      setorderNumbers(generalInfo.orders);
-      setCustomerNumbers(generalInfo.customers);
-      setProductNumbers(generalInfo.products);
-      setSalesNumbers(generalInfo.sales);
-      setLastOrdersData(lastOrders);
-      setChartData(graphData);
-      setisLoading(false)
-    }
-    fetch();
-  }, []);
-
-
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-
-  // const options = {
-  //   responsive: true,
-  //   plugins: {
-  //     legend: {
-  //       position: "top",
-  //     },
-  //     // title: {
-  //     //   display: true,
-  //     //   text: "Chart.js Line Chart",
-  //     // },
-  //   },
-  // };
 
   const months = {
     1: "January",
@@ -98,82 +57,144 @@ const Dashboard = () => {
     11: "November",
     12: "December",
   };
-  const handleChange = (value, label) => {
-    // console.log('clicked!!!')
-    const [month, year] = label.label.split(" ");
-     const formattedMonth = Object.keys(months).find(
-    (key) => months[key] === month
-    );
-    // console.log(formattedMonth + '-' + year, 'jhgdvuweduwedw')
-    setSelectedMonth(formattedMonth + '-' + year)
+
+  // const tempData = [
+  //   {
+  //     "3-2024": [],
+  //   },
+  //   {
+  //     "4-2024": [],
+  //   },
+  // ];
+
+  useEffect(() => {
+    async function fetch() {
+      const {
+        data: generalInfo,
+        orders: lastOrders,
+        graph: graphData,
+      } = await getDashboardData();
+
+      setorderNumbers(generalInfo.orders);
+      setCustomerNumbers(generalInfo.customers);
+      setProductNumbers(generalInfo.products);
+      setSalesNumbers(generalInfo.sales);
+      setLastOrdersData(lastOrders);
+      setChartData(graphData);
+      setisLoading(false);
+    }
+
+    fetch();
+  }, []);
+
+  useEffect(() => {
+     const itemData = chartData?.map((key, index) => ({
+        label:
+          months[Object.keys(key)[0].split("-")[0]] +
+          " " +
+          Object.keys(key)[0].split("-")[1],
+        value: String(index + 1),
+      }));
+      setItems(itemData);
+  },[chartData])
+
+  useEffect(() => {
+    if (items) {
+      const [month, year] = items[0].label.split(" ");
+      const formattedMonth = Object.keys(months).find(
+        (key) => months[key] === month
+      );
+      setSelectedMonth(formattedMonth + "-" + year);
+    }
+  }, [items]);
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top",
+      },
+      // title: {
+      //   display: true,
+      //   text: "Chart.js Line Chart",
+      // },
+    },
+      scales: {
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Days of month'
+          },
+         ticks: {
+            autoSkip: true, 
+            maxTicksLimit: 10,
+        },
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Sales'
+        },
+      }
+    }
   };
 
-  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  const handleChange = (value, label) => {
+    const [month, year] = label.label.split(" ");
+    const formattedMonth = Object.keys(months).find(
+      (key) => months[key] === month
+    );
+    setSelectedMonth(formattedMonth + "-" + year);
+  };
 
-  // const labels = Object.keys(chartData["3-2024"]).map((key) => key);
-  // console.log(keysArray,'labels===');
-
-  // const data = Object.values(chartData["3-2024"]).map((value) => value);
-  // console.log(data, "/////", abc);
-  // let abc = [];
-  // let totalPrice
-  // const nested = data.map((item) =>
-  //   totalPrice = 0
-  //   item.forEach((item) => {
-  //     totalPrice += item.price;
-  //   })
-  //   abc.push(totalPrice)
-  // );
-  const tempData = [
-    {
-      '3-2024': {
-    }
-    },
-    {
-      '4-2024': {
-    }
-    }
-]
-  // console.log(chartData,'dataaaaaaaaaaaaaa')
   let chart;
-  let items;
-  // if (chartData) {
-  //   // items = Object.keys(chartData).map((key, index) => ({
-  //   //   label: months[key.split("-")[0]] + " " + key.split("-")[1],
-  //   //   value: String(index + 1),
-  //   // }));
 
-  //   // tempData.map((data, index) => {
-  //   //   console.log(Object.keys(data), 'key/////')
-  //   //   // items.push(Object.keys(data)[0])
-  //   // });
-  //   items = chartData.map(item => Object.keys(item)[0]);
-  //   console.log(items,'itemssssssssssssssssss')
-  //   const labels = Object.keys(chartData[0]["3-2024"]).map((key) => key);
-  //   // const data = Object.values(chartData["3-2024"]).map((value) => value);
-  //   let dataPoints = [];
-  //   let totalPrice;
-  //   console.log(labels,'///======')
-  //   // data.forEach((item) => {
-  //   //   totalPrice = 0;
-  //   //   item.forEach((i) => {
-  //   //     totalPrice += Number(i.grandTotal);
-  //   //   });
-  //   //   dataPoints.push(totalPrice);
-  //   // });
+  if (chartData && selectedMonth) {
 
-  //   // chart = {
-  //   //   labels,
-  //   //   datasets: [
-  //   //     {
-  //   //       label: "Sales Data",
-  //   //       data: dataPoints,
-  //   //       borderColor: "#00B6DE",
-  //   //       backgroundColor: "#00B6DE",
-  //   //     },
-  //   //   ],
-  //   // };
-  // }
+    const selectedData = chartData.find((item) => Object.keys(item) == selectedMonth)
+
+    labels = selectedData[selectedMonth].map((item) => Object.keys(item)[0])
+
+    // const data = Object.values(chartData[selectedMonth]).map((value) => value);
+
+    const data = selectedData[selectedMonth].map((item) => Object.values(item)[0]);
+
+    let dataPoints = [];
+    let totalPrice;
+
+    data.forEach((item) => {
+      totalPrice = 0;
+      item.forEach((i) => {
+        totalPrice += Number(i.grandTotal);
+      });
+      dataPoints.push(totalPrice);
+    });
+
+    chart = {
+      labels,
+      datasets: [
+        {
+          label: "Sales Data",
+          data: dataPoints,
+          borderColor: "#00B6DE",
+          backgroundColor: "#00B6DE",
+        },
+      ],
+    };
+  }
+
 
   const modalStyles = {
     width: "60% !important",
@@ -202,7 +223,7 @@ const Dashboard = () => {
       key: "orderId",
     },
     {
-      title: "Customer Name",
+      title: "Customer Name", 
       dataIndex: "Customer Name",
       key: "userId",
       render: (text, record) => (
@@ -261,8 +282,9 @@ const Dashboard = () => {
     },
   ];
 
-  return (
-    isLoading? <Loader/> :
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div>
       <div>
         <h4>Home</h4>
@@ -378,8 +400,7 @@ const Dashboard = () => {
           <h4>Sales Details</h4>
           {items && (
             <Select
-              defaultValue={items[0]?.label}
-              // defaultValue='abc'
+              defaultValue={items[0].label}
               style={{
                 width: 120,
               }}
@@ -389,8 +410,7 @@ const Dashboard = () => {
           )}
         </div>
 
-          {/* <div className="inner-chart-div">  {chartData && <Line style={{width: '900px', height: '350px'}} options={options} data={chart} />}</div> */}
-      
+        <div className="inner-chart-div">  {chartData && labels && <Line style={{width: '900px', height: '350px'}} options={options} data={chart} />}</div>
       </div>
 
       <div className="latest-orders-div">
