@@ -410,7 +410,7 @@ const Dashboard = () => {
           )}
         </div>
 
-        <div className="inner-chart-div">  {chartData && labels && <Line style={{width: '900px', height: '350px'}} options={options} data={chart} />}</div>
+        <div className="inner-chart-div">  {chartData && labels && <Line  options={options} data={chart} />}</div>
       </div>
 
       <div className="latest-orders-div">

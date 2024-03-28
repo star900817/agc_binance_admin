@@ -51,7 +51,26 @@
     margin-top: 20px;
     border-radius: 20px;
 }
-.inner-chart-div canvas{
+/* .inner-chart-div canvas{
     width: 900px !important;
     height: 350px !important;
+} */
+
+.inner-chart-div canvas{
+    height: 20% !important;
+    width: -webkit-fill-available !important;
+}
+
+@media only screen and (min-width: 1500px) and (max-width: 1900px){
+    .inner-chart-div canvas {
+            height: 600px !important;
+         
+        }
+}
+
+@media only screen and (min-width: 1900px){
+        .inner-chart-div canvas {
+                height: 750px !important;
+        
+            }
 }
